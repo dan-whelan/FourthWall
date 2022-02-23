@@ -7,7 +7,7 @@
 - In the helper_scripts folder create a file called ".env" and write ```PASSWORD=yourPostgresPassword```.
 - Run create_tables.py to create two tables in a specified schema (can only be run once).
 - Run populate_postgres.py (can be run any number of times, by default it adds 10 rows to the two tables created in the previous step on each run but you can modify this number).
-- Run create_index.py to create two indexes on the college.address table created in step 3.
+- Run create_index.py to create two indexes on the college.address table created in step 4.
 
 ## Note
 
