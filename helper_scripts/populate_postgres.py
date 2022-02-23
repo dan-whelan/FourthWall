@@ -13,7 +13,6 @@ if __name__ == '__main__':
     start = num_address_rows+1
     for index in range(start, start+num_rows):
         addresses.append((f'{get_num()} {get_street()}', f'{get_city()}', f'{get_country()}', f'{get_postal_code()}'))
-        # modify to return id and use that instead of index!!
         students.append((f'{get_name()}', f'{get_age()}', f'{index}'))
 
     insert_list(schema = 'college', table = 'address', cols = ('address', 'city', 'country', 'postal_code'), data = addresses)
