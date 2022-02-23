@@ -17,3 +17,11 @@
 ## Extra Requirements
 
 - Python 3.9+
+
+### Install Required Python Packages
+
+Make sure you are in the helper_scripts directory and run
+
+```python
+pip install -r requirements.txt
+```
