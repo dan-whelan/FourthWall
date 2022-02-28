@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "3/4tHje5SfxeD9KFi0pPxnZ4NoHy49YU6+ehjd8zhVF2gKHwQrwPim7mKkUQ5yvsNymCEY3ev8CjBtByFz8VVA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\harol\\Documents\\TCD\\SWE_PROJECT_1\\code\\FourthWall\\monitoring_service\\test_dotnet.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\harol\\.nuget\\packages\\npgsql\\6.0.3\\npgsql.6.0.3.nupkg.sha512",
+    "C:\\Users\\harol\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
