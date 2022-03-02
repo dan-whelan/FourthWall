@@ -8,7 +8,7 @@ from utils import (
 if __name__ == '__main__':
     addresses = []
     students = []
-    num_rows = 10 
+    num_rows = 2000
     num_address_rows = get_length_of_address_table()
     start = num_address_rows+1
     for index in range(start, start+num_rows):
