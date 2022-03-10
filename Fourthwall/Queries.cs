@@ -44,7 +44,7 @@ namespace Fourthwall
         }
         private static NpgsqlConnection GetConnection()
         {
-            return new NpgsqlConnection(@"Server=localhost;Port=5432;User Id=postgres;Password=Tonye991@;Database=finbourne");
+            return new NpgsqlConnection(@"Server=localhost;Port=5432;User Id=postgres;Password=[password];Database=[database]");
         }
 
         private static void getTableStatistics(string schema) 
