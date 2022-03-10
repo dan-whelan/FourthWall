@@ -17,14 +17,15 @@ namespace Fourthwall
         {
             //TestConnection();
 
-            // modify the parameters below to the values of your local postgres table and schema 
+            // modify the parameters below to the values of your local postgres table and schema, ensure query is valid as well
             string schema = "college";
-            string table = "address";
-            string query = $"SELECT * FROM {schema}.{table} WHERE city = 'Kensington';";
+            string table1 = "student";
+            string table2 = "address";
+            string query = $"SELECT * FROM {schema}.{table2} WHERE city = 'Kensington';";
 
             getTableStatistics(schema);
             getIndexStatistics(schema);
-            getTableData(schema, table);
+            getTableData(schema, table1);
             getResultOfExplainAnalyze(query);
         }
         
@@ -43,7 +44,7 @@ namespace Fourthwall
         }
         private static NpgsqlConnection GetConnection()
         {
-            return new NpgsqlConnection(@"Server=localhost;Port=5432;User Id=postgres;Password=[password];Database=[name]");
+            return new NpgsqlConnection(@"Server=localhost;Port=5432;User Id=postgres;Password=Tonye991@;Database=finbourne");
         }
 
         private static void getTableStatistics(string schema) 
@@ -112,8 +113,7 @@ namespace Fourthwall
             {
                 for (int i = 0; i < reader.FieldCount; i++) 
                 {
-                    sb.Append(String.Format("{0, -20}", reader[i]));
-                    sb.Append("\t");
+                    sb.Append(String.Format("{0, -24}", reader[i]));
                 }
                 sb.Append('\n');
                 if (++rowCount >= 10) break;
