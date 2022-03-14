@@ -16,6 +16,9 @@ namespace Fourthwall
         static void Main(string[] args)
         {
             //TestConnection();
+            var root = Directory.GetCurrentDirectory();
+            var dotenv = Path.Combine(root, ".env");
+            DotEnv.Load(dotenv);
 
             // modify the parameters below to the values of your local postgres table and schema, ensure query is valid as well
             string schema = "college";
@@ -44,7 +47,9 @@ namespace Fourthwall
         }
         private static NpgsqlConnection GetConnection()
         {
-            return new NpgsqlConnection(@"Server=localhost;Port=5432;User Id=postgres;Password=[password];Database=[database]");
+            string? database = Environment.GetEnvironmentVariable("DATABASE");
+            string? password = Environment.GetEnvironmentVariable("PASSWORD");
+            return new NpgsqlConnection($"Server=localhost;Port=5432;User Id=postgres;Password={password};Database={database}");
         }
 
         private static void getTableStatistics(string schema) 
