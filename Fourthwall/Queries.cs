@@ -26,8 +26,8 @@ namespace Fourthwall
             string table2 = "address";
             string query = $"SELECT * FROM {schema}.{table2} WHERE city = 'Kensington';";
 
-            getTableStatistics(schema);
-            getIndexStatistics(schema);
+            getTableStatistics();
+            getIndexStatistics();
             getTableData(schema, table1);
             getResultOfExplainAnalyze(query);
         }
@@ -52,7 +52,7 @@ namespace Fourthwall
             return new NpgsqlConnection($"Server=localhost;Port=5432;User Id=postgres;Password={password};Database={database}");
         }
 
-        private static void getTableStatistics(string schema) 
+        private static void getTableStatistics() 
         {
             //get connection
             NpgsqlConnection con = GetConnection();
@@ -67,7 +67,7 @@ namespace Fourthwall
         } 
         
 
-        private static void getIndexStatistics(string schema) 
+        private static void getIndexStatistics() 
         {
              //get connection
             NpgsqlConnection con = GetConnection();
