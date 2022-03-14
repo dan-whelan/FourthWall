@@ -59,7 +59,7 @@ namespace Fourthwall
             con.Open();
 
              // Define a query
-            NpgsqlCommand command = new NpgsqlCommand($"SELECT relname, seq_scan, seq_tup_read, idx_scan, idx_tup_fetch, n_tup_ins,n_tup_upd,n_tup_del, n_tup_hot_upd, n_live_tup,  n_dead_tup,   n_mod_since_analyze,   n_ins_since_vacuum,   last_vacuum,   last_autovacuum,   last_analyze,   last_autoanalyze,   vacuum_count,   autovacuum_count,   analyze_count,    autoanalyze_count FROM pg_stat_all_tables WHERE schemaname = '{schema}' ORDER BY relname;", con);
+            NpgsqlCommand command = new NpgsqlCommand($"SELECT * FROM pg_stat_all_tables ORDER BY schemaname;", con);
 
              // Execute the query and obtain a result set
             executeAndPrintResults(command);
@@ -74,8 +74,8 @@ namespace Fourthwall
             con.Open();
 
              // Define a query
-            NpgsqlCommand command = new NpgsqlCommand($"SELECT relname,  indexrelname,   idx_scan,  idx_tup_read,  idx_tup_fetch FROM  pg_stat_all_indexes WHERE schemaname = '{schema}' ORDER BY     relname,   indexrelname;", con);
-
+            NpgsqlCommand command = new NpgsqlCommand($"SELECT * FROM  pg_stat_all_indexes ORDER BY schemaname;", con);
+             
              // Execute the query and obtain a result set
             executeAndPrintResults(command);
             con.Close();
