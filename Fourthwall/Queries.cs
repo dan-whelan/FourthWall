@@ -13,24 +13,24 @@ namespace Fourthwall
 {
     internal class Queries
     {
-        static void Main(string[] args)
-        {
-            //TestConnection();
-            var root = Directory.GetCurrentDirectory();
-            var dotenv = Path.Combine(root, ".env");
-            DotEnv.Load(dotenv);
+        // static void Main(string[] args)
+        // {
+        //     //TestConnection();
+        //     var root = Directory.GetCurrentDirectory();
+        //     var dotenv = Path.Combine(root, ".env");
+        //     DotEnv.Load(dotenv);
 
-            // modify the parameters below to the values of your local postgres table and schema, ensure query is valid as well
-            string schema = "college";
-            string table1 = "student";
-            string table2 = "address";
-            string query = $"SELECT * FROM {schema}.{table2} WHERE city = 'Kensington';";
+        //     // modify the parameters below to the values of your local postgres table and schema, ensure query is valid as well
+        //     string schema = "college";
+        //     string table1 = "student";
+        //     string table2 = "address";
+        //     string query = $"SELECT * FROM {schema}.{table2} WHERE city = 'Kensington';";
 
-            getTableStatistics();
-            getIndexStatistics();
-            getTableData(schema, table1);
-            getResultOfExplainAnalyze(query);
-        }
+        //     getTableStatistics();
+        //     getIndexStatistics();
+        //     getTableData(schema, table1);
+        //     getResultOfExplainAnalyze(query);
+        // }
         
 
         //tests connection between program and database
