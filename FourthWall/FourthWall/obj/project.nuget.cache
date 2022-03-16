@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "PemDeovddODPmG9aHt6A+xPxXiRfzqu2be+Lqwckh/F9KYVAoF8a02cJ4PmxY5OPaevcuXKssO4jifvPWm7kTQ==",
+  "dgSpecHash": "VBS5KQZyvdrjsimBqB4BRimtEmpXmJQ+z3BY/KrlqLkTegLpuRu5LSgV+UCkslo2r5mml9jpKJVSsyjb2cmQiA==",
   "success": true,
   "projectFilePath": "/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/FourthWall.csproj",
   "expectedPackageFiles": [
@@ -56,6 +56,7 @@
     "/Users/dwhelan/.nuget/packages/microsoft.win32.registry/4.7.0/microsoft.win32.registry.4.7.0.nupkg.sha512",
     "/Users/dwhelan/.nuget/packages/microsoft.win32.systemevents/4.7.0/microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "/Users/dwhelan/.nuget/packages/newtonsoft.json/11.0.2/newtonsoft.json.11.0.2.nupkg.sha512",
+    "/Users/dwhelan/.nuget/packages/npgsql/5.0.12/npgsql.5.0.12.nupkg.sha512",
     "/Users/dwhelan/.nuget/packages/runtime.native.system/4.3.0/runtime.native.system.4.3.0.nupkg.sha512",
     "/Users/dwhelan/.nuget/packages/swashbuckle.aspnetcore/5.6.3/swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
     "/Users/dwhelan/.nuget/packages/swashbuckle.aspnetcore.swagger/5.6.3/swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
