@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using FourthWall.Models;
+//using FourthWall.Models;
 
 namespace FourthWall
 {
@@ -29,8 +29,6 @@ namespace FourthWall
         {
 
             services.AddControllers();
-            services.AddDbContext<ToDoContext>(opt =>
-                opt.UseInMemoryDatabase("ToDoList"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

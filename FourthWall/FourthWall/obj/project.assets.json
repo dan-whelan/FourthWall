@@ -7368,7 +7368,7 @@
       "outputPath": "/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/dwhelan/.config/NuGet/NuGet.Config"
+        "/Users/dwhelan/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net5.0"

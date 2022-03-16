@@ -39,6 +39,7 @@
           "Microsoft.EntityFrameworkCore.SqlServer": "5.0.15",
           "Microsoft.VisualStudio.Web.CodeGeneration": "5.0.2",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "5.0.2",
+          "Npgsql": "5.0.12",
           "Swashbuckle.AspNetCore": "5.6.3",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "5.0.0.0",
@@ -1105,6 +1106,20 @@
         },
         "compile": {
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+        }
+      },
+      "Npgsql/5.0.12": {
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "4.7.1"
+        },
+        "runtime": {
+          "lib/net5.0/Npgsql.dll": {
+            "assemblyVersion": "5.0.12.0",
+            "fileVersion": "5.0.12.0"
+          }
+        },
+        "compile": {
+          "lib/net5.0/Npgsql.dll": {}
         }
       },
       "runtime.native.System/4.3.0": {
@@ -3929,6 +3944,13 @@
       "sha512": "sha512-IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
       "path": "newtonsoft.json/11.0.2",
       "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
+    },
+    "Npgsql/5.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TJR33fRqx2JZ2vG5cyXwnx86nA5090rQhnfih/uQmbfbkVvVFLfYoTeMcaHjpMBnV4H8B47Gk4pIonSym1d/BA==",
+      "path": "npgsql/5.0.12",
+      "hashPath": "npgsql.5.0.12.nupkg.sha512"
     },
     "runtime.native.System/4.3.0": {
       "type": "package",
