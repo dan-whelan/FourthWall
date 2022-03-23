@@ -13,6 +13,7 @@ namespace Fourthwall
 {
     internal class Queries
     {
+        private static string basePath = "";
         static void Main(string[] args)
         {
             //TestConnection();
@@ -26,8 +27,8 @@ namespace Fourthwall
             string table2 = "address";
             string query = $"SELECT * FROM {schema}.{table2} WHERE city = 'Kensington';";
 
-            getTableStatistics();
-            getIndexStatistics();
+            storeTableStatistics();
+            storeIndexStatistics();
             getTableData(schema, table1);
             getResultOfExplainAnalyze(query);
         }
@@ -52,7 +53,7 @@ namespace Fourthwall
             return new NpgsqlConnection($"Server=localhost;Port=5432;User Id=postgres;Password={password};Database={database}");
         }
 
-        private static void getTableStatistics() 
+        private static void storeTableStatistics() 
         {
             //get connection
             NpgsqlConnection con = GetConnection();
@@ -67,7 +68,7 @@ namespace Fourthwall
         } 
         
 
-        private static void getIndexStatistics() 
+        private static void storeIndexStatistics() 
         {
              //get connection
             NpgsqlConnection con = GetConnection();
@@ -80,7 +81,21 @@ namespace Fourthwall
             executeAndPrintResults(command);
             con.Close();
         } 
+
+        private static void storeSlowRunningQueries(string fromTimestamp, string toTimestamp) 
+        {
+
+        }
         
+        private static void store(string path, string data, bool append) 
+        {
+            byte[] byteArr =  Encoding.ASCII.GetBytes(data);
+            using (StreamWriter writer = new StreamWriter(basePath+path, append))
+            { 
+                writer.Write(byteArr);          
+            }
+        }
+
         // api team calls this method 
         private static void getTableData(string schema, string table) 
         {
@@ -102,6 +117,13 @@ namespace Fourthwall
             executeAndPrintResults(cmd);
             con.Close();
         }
+
+        // api team calls this method
+        private static void getOpenTransactions(string schema, string tableName) 
+        {
+
+        }
+
         // Executes and Prints the given command (number of rows printed is limited to 10)
         private static void executeAndPrintResults(NpgsqlCommand cmd) 
         {
