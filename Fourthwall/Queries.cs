@@ -13,7 +13,7 @@ namespace Fourthwall
 {
     internal class Queries
     {
-        private static string basePath = "";
+        private static string basePath = "C:/Users/harol/Documents";
         static void Main(string[] args)
         {
             //TestConnection();
@@ -32,9 +32,9 @@ namespace Fourthwall
             getTableData(schema, table1);
             getResultOfExplainAnalyze(query);
             
-            store("testBlobStore", "works!");
+            store("tablestats/schemax/tablex", "it works!");
             Console.WriteLine("stored!");
-            getData("testBlobStore");
+            getData("tablestats/schemax/tablex");
         }
 
 
@@ -67,7 +67,7 @@ namespace Fourthwall
             NpgsqlCommand command = new NpgsqlCommand($"SELECT * FROM pg_stat_all_tables ORDER BY schemaname;", con);
 
              // Execute the query and obtain a result set
-            executeAndPrintResults(command);
+            executeAndPrintResults(command, 0);
             con.Close();
         } 
         
@@ -82,7 +82,7 @@ namespace Fourthwall
             NpgsqlCommand command = new NpgsqlCommand($"SELECT * FROM  pg_stat_all_indexes ORDER BY schemaname;", con);
              
              // Execute the query and obtain a result set
-            executeAndPrintResults(command);
+            executeAndPrintResults(command, 2);
             con.Close();
         } 
 
@@ -94,6 +94,10 @@ namespace Fourthwall
         // overwrites the file
         private static void store(string path, string data) 
         {
+            // create the directory if it does not exist
+            int lastIndex = path.LastIndexOf('/');
+            Directory.CreateDirectory(Path.Combine(basePath, path[..lastIndex]));
+
             string fullpath = Path.Combine(basePath, path);
             byte[] byteArr =  Encoding.ASCII.GetBytes(data);
             File.WriteAllBytes(fullpath, byteArr);
@@ -114,7 +118,7 @@ namespace Fourthwall
             con.Open();
             string sql = $"SELECT * FROM {schema}.{table};";
             NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
-            executeAndPrintResults(cmd);
+            executeAndPrintResults(cmd, 2);
             con.Close();
         }
 
@@ -125,7 +129,7 @@ namespace Fourthwall
             con.Open();
             string sql = $"EXPLAIN ANALYZE {query}";
             NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
-            executeAndPrintResults(cmd);
+            executeAndPrintResults(cmd, 2);
             con.Close();
         }
 
@@ -136,22 +140,53 @@ namespace Fourthwall
         }
 
         // Executes and Prints the given command (number of rows printed is limited to 10)
-        private static void executeAndPrintResults(NpgsqlCommand cmd) 
+        private static void executeAndPrintResults(NpgsqlCommand cmd, int sel) 
         {
             NpgsqlDataReader reader = cmd.ExecuteReader();
             StringBuilder sb = new System.Text.StringBuilder();
+            int tableindex = 0;
+            int schemaindex = 0;
             for (int i = 0; i < reader.FieldCount; i++) 
             {
                 sb.Append(String.Format("{0, -24}", reader.GetName(i)));
+                if (reader.GetName(i).Equals("schemaname")) 
+                {
+                    Console.WriteLine($"schemaname index = {i}");
+                    schemaindex = i;
+                }
+                if (reader.GetName(i).Equals("relname")) 
+                {
+                    Console.WriteLine($"tablename index = {i}");
+                    tableindex = i;
+                }
             }
             sb.Append('\n');
 
             int rowCount = 0;
             while (reader.Read()) 
             {
+                string data = "";
+                string schema = "";
+                string table = "";
+                StringBuilder rowSB = new System.Text.StringBuilder();
                 for (int i = 0; i < reader.FieldCount; i++) 
                 {
-                    sb.Append(String.Format("{0, -24}", reader[i]));
+                    if (i == schemaindex) 
+                    {
+                        schema = String.Format("{0}", reader[i]);
+                    }
+                    if (i == tableindex) 
+                    {
+                        table = String.Format("{0}", reader[i]);
+                    }
+                    data = String.Format("{0, -24}", reader[i]);
+                    rowSB.Append(data);
+                    sb.Append(data);
+                }
+                if (sel == 0) 
+                {   
+                    string path = $"tablestats/{schema}/{table}";
+                    store(path, rowSB.ToString());
                 }
                 sb.Append('\n');
                 if (++rowCount >= 10) break;
@@ -159,6 +194,6 @@ namespace Fourthwall
         
             Console.WriteLine(sb);
         }
-    }
-    
+    }    
+
 }
