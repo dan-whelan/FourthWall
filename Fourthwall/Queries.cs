@@ -31,8 +31,12 @@ namespace Fourthwall
             storeIndexStatistics();
             getTableData(schema, table1);
             getResultOfExplainAnalyze(query);
+            
+            store("testBlobStore", "works!");
+            Console.WriteLine("stored!");
+            getData("testBlobStore");
         }
-        
+
 
         //tests connection between program and database
         private static void TestConnection()
@@ -87,13 +91,20 @@ namespace Fourthwall
 
         }
         
-        private static void store(string path, string data, bool append) 
+        // overwrites the file
+        private static void store(string path, string data) 
         {
+            string fullpath = Path.Combine(basePath, path);
             byte[] byteArr =  Encoding.ASCII.GetBytes(data);
-            using (StreamWriter writer = new StreamWriter(basePath+path, append))
-            { 
-                writer.Write(byteArr);          
-            }
+            File.WriteAllBytes(fullpath, byteArr);
+        }
+
+        private static void getData(string path) 
+        {
+            string fullpath = Path.Combine(basePath, path);
+            byte[] byteArr = File.ReadAllBytes(fullpath);
+            string str = System.Text.Encoding.Default.GetString(byteArr);
+            Console.WriteLine($"data = {str}");
         }
 
         // api team calls this method 
