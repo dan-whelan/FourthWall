@@ -1,58 +1,186 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.IO;
+using System.Runtime.Serialization.Json;
+using System.Text;
 
 namespace FourthWall.Controllers
 {
     [ApiController]
     public class FourthWallController : ControllerBase
     {
+        private DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<>)); 
         [HttpGet("/api/queries/{from:datetime?}/{to:datetime?}")]
-        public int getQueries(DateTime from = DateTime.Now.Subtract(TimeSpan.FromMinutes(5)), DateTime to = DateTime.Now)
+        public IActionResult getQueries(DateTime from, DateTime to)
         {
-            return 1;
+            try
+            {
+                Dictionary<> queries = getQueries(from, to);
+                if (queries != null)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        serializer.WriteObject(ms, queries);
+                        Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+                        return Ok(JsonSerializer.Serialize(queries));
+                    }
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+                return NotFound();
+            }
+
         }
 
         [HttpGet("/api/transactions")]
-        public int getTransactions()
+        public IActionResult getTransactions()
         {
-            return 1;
+            try
+            {
+                Dictionary<> transactions = getOpenTransactions();
+                if (transactions != null)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        serializer.WriteObject(ms, transactions);
+                        Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+                        return Ok(JsonSerializer.Serialize(transactions));
+                    }
+                }
+                return NotFound();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+                return NotFound();
+            }
         }
 
         [HttpGet("/api/statistics/{schema}/{table}")]
-        public int getTableStats(String schema, String table)
+        public IActionResult getTableStats(string schema, string table)
         {
-            return 1;
+            try
+            {
+                Dictionary<> tableStats = getTableStats(schema, table);
+                if (tableStats != null)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        serializer.WriteObject(ms, tableStats);
+                        Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+                        return Ok(JsonSerializer.Serialize(tableStats));
+                    }
+                }
+                return NotFound();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+                return NotFound();
+            }
+
         }
 
         [HttpGet("/api/indexes/{schema}/{table}/{index}")]
-        public int getIndexUsage(String schema, String table, String index)
+        public IActionResult getIndexUsage(string schema, string table, string index)
         {
-            return 1;
+            try
+            {
+                Dictionary<> indexUsage = getIndexUsage(schema, table, index);
+                if (indexUsage != null)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        serializer.WriteObject(ms, indexUsage);
+                        Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+                        return Ok(JsonSerializer.Serialize(indexUsage));
+                    }
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+                return NotFound();
+            }
         }
 
         [HttpGet("/api/indexes/{schema}/{table}")]
-        public int getAllIndexUsage(String schema, String table)
+        public IActionResult getAllIndexUsage(string schema, string table)
         {
-            return 1;
+            try
+            {
+                Dictionary<> allIndexUsage = getIndexesUsage(schema, table);
+                if (allIndexUsage)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        serializer.WriteObject(ms, allIndexUsage);
+                        Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+                        return Ok(JsonSerializer.Serialize(allIndexUsage));
+                    }
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+                return NotFound();
+            }
         }
 
-        [HttpPost("/api/query")]
-        public int postExplainAnalyse()
+        [HttpPost("/api/query/")]
+        public IActionResult postExplainAnalyse([FromBody]string query)
         {
-            //
-            // ASK: how to get input on query to post?
-            //
-            return 1;
+            try
+            {
+                Dictionary<> response = getResultOfExplainAnalyse(query);
+                if (response != null)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        serializer.WriteObject(ms, response);
+                        Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+                        return Ok(JsonSerializer.Serialize(response));
+                    }
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+                return NotFound();
+            }
         }
 
         [HttpGet("/api/data/{schema}/{table}")]
-        public int getSystemTableData(String schema, String table)
+        public IActionResult getSystemTableData(string schema, string table)
         {
-            return 1;
+            try
+            {
+                Dictionary<> tableData = getTableData(schema, table);
+                if (tableData != null)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        serializer.WriteObject(ms, tableData);
+                        Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+                        return Ok(JsonSerializer.Serialize(tableData));
+                    }
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+                return NotFound();
+            }
         }
     }
 }
