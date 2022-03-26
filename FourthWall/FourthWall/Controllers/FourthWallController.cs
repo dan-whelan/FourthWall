@@ -10,8 +10,8 @@ namespace FourthWall.Controllers
     [ApiController]
     public class FourthWallController : ControllerBase
     {
-        [HttpGet("/api/queries?from=&to=")] // May need to be changed
-        public int getQueries()
+        [HttpGet("/api/queries/{from:datetime?}/{to:datetime?}")]
+        public int getQueries(DateTime from = DateTime.Now.Subtract(TimeSpan.FromMinutes(5)), DateTime to = DateTime.Now)
         {
             return 1;
         }
@@ -23,19 +23,19 @@ namespace FourthWall.Controllers
         }
 
         [HttpGet("/api/statistics/{schema}/{table}")]
-        public int getTableStats()
+        public int getTableStats(String schema, String table)
         {
             return 1;
         }
 
         [HttpGet("/api/indexes/{schema}/{table}/{index}")]
-        public int getIndexUsage()
+        public int getIndexUsage(String schema, String table, String index)
         {
             return 1;
         }
 
         [HttpGet("/api/indexes/{schema}/{table}")]
-        public int getAllIndexUsage()
+        public int getAllIndexUsage(String schema, String table)
         {
             return 1;
         }
@@ -50,7 +50,7 @@ namespace FourthWall.Controllers
         }
 
         [HttpGet("/api/data/{schema}/{table}")]
-        public int getSystemTableData()
+        public int getSystemTableData(String schema, String table)
         {
             return 1;
         }
