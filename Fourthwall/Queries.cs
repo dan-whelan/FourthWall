@@ -25,15 +25,15 @@ namespace Fourthwall
             DotEnv.Load(dotenv);
 
             // modify the parameters below to the values of your local postgres table and schema, ensure query is valid as well
-            string schema = "college";
-            string table1 = "student";
-            string table2 = "address";
-            string query = $"SELECT * FROM {schema}.{table2} WHERE city = 'Kensington';";
+            // string schema = "college";
+            // string table1 = "student";
+            // string table2 = "address";
+            // string query = $"SELECT * FROM {schema}.{table2} WHERE city = 'Kensington';";
 
             storeTableStatistics();
             storeIndexStatistics();
-            getTableData(schema, table1);
-            getResultOfExplainAnalyze(query);
+            // getTableData(schema, table1);
+            // getResultOfExplainAnalyze(query);
             
             // test retrieving from file system
             Console.WriteLine("retrieving stats for the address table.");
@@ -47,6 +47,10 @@ namespace Fourthwall
 
             Console.WriteLine("\nretrieving usage for all indexes in student table.");
             getIndexesUsage("college", "student");
+            
+            Console.WriteLine("\nretrieving long running queries for timestamp1");
+            getLongRunningQueries();
+
         }
 
 
@@ -102,7 +106,7 @@ namespace Fourthwall
             con.Close();
         } 
 
-        private static void storeSlowRunningQueries(string fromTimestamp, string toTimestamp) 
+        private static void storeLongRunningQueries(string fromTimestamp, string toTimestamp) 
         {
 
         }
@@ -123,6 +127,7 @@ namespace Fourthwall
         {
             //TODO : check if path exists if no * in it and use IFailure? see blob interface & coding standards 
             // if * ensure path before /* exists 
+            // error checking for if line is an empty line at the end of the file
             
             char lastChar = path[path.Length-1];
             if (lastChar.Equals('*')) 
@@ -131,10 +136,13 @@ namespace Fourthwall
                 string fullParentDir = Path.Combine(basePath, parentDir);
                 string[] entries = Directory.GetFiles(fullParentDir);
                 List<string> arr = new List<string>();
-                foreach (string entry in entries) 
+                for (int i = 0; i < entries.Count(); i++) 
                 {
-                    arr.Add(entry);
-                    arr.AddRange(getData(entry));
+                    string entry = entries[i];
+                    if (i == 0) {
+                        arr.AddRange(getData(entry).ToArray());                  
+                    } 
+                    else arr.AddRange(getData(entry).Skip(1).ToArray());      
                 }
 
                 return arr.ToArray();
@@ -151,33 +159,25 @@ namespace Fourthwall
             }
         }
 
-        private static void parseDataFromFileSystem(string[] data) 
-        {
+        private static List<Dictionary<string, string>> parseDataFromFileSystem(string[] data) 
+        {   
             // case 1, 1 line header, 1 line stats -> table stats, index usage 
             // case 2, 1 line header, more than 1 line stats -> long running queries 
-            // case 3, 1 line name of index, 1 line header, 1 line stats -> index usage for all indexes in a table 
+            // case 3, 1 line name of index, 1 line header, 1 line stats, for each index in the table -> index usage for all indexes in a table 
             // note about case 3 redundant having headers for each index but keeps implementation simple. 
             // safe to assume N will never be large, where N is the number of indexes in one table 
 
-        }
+            string[] headers = data[0].Split(',');
+            var list = new List<Dictionary<string, string>>();
+            for (int i = 1; i < data.Length; i++) 
+            {
+                string[] stats = data[i].Split(',');
+                Dictionary<string, string> map = headers.Zip(stats, (k, v) => new {Key = k, Value = v}).ToDictionary(x => x.Key, x => x.Value);
+                list.Add(map);
+            }
+            list.ForEach(x => x.ToList().ForEach(x => Console.WriteLine(x)));
 
-        private static void parseTableStats(string[] data) 
-        {
-
-        }
-
-        private static void parseIndexUsage(string[] data) 
-        {
-
-        }
-
-        private static void parseAllIndexesInTableUsage(string[] data) 
-        {
-            
-        }
-        private static void parseLongRunningQueries(string[] data) 
-        {
-
+            return list;
         }
 
         private static void retrieveTableStatsAndPersist(NpgsqlCommand cmd) {
@@ -313,6 +313,10 @@ namespace Fourthwall
             for (int i = 0; i < reader.FieldCount; i++) 
             {
                 headers.Append(String.Format("{0}", reader.GetName(i)));
+                if (i != reader.FieldCount - 1) 
+                {
+                    headers.Append(',');
+                }
             }
 
             while (reader.Read()) 
@@ -339,6 +343,10 @@ namespace Fourthwall
             for (int i = 0; i < reader.FieldCount; i++) 
             {
                 headers.Append(String.Format("{0}", reader.GetName(i)));
+                if (i != reader.FieldCount - 1) 
+                {
+                    headers.Append(',');
+                }
             }
             tableData.Add(headers.ToString());
 
@@ -393,27 +401,31 @@ namespace Fourthwall
         }
 
         // api team calls this method 
-        public static string[] getTableStats(string schema, string table) 
+        public static List<Dictionary<string, string>> getTableStats(string schema, string table) 
         {
-            return getData($"tablestats/{schema}/{table}");
+            string[] stats = getData($"tablestats/{schema}/{table}");
+            return parseDataFromFileSystem(stats);
         }
 
         // api team calls this method 
-        public static string[] getIndexUsage(string schema, string table, string index) 
+        public static List<Dictionary<string, string>> getIndexUsage(string schema, string table, string index) 
         {
-            return getData($"indexusage/{schema}/{table}/{index}");
+            string[]stats = getData($"indexusage/{schema}/{table}/{index}");
+            return parseDataFromFileSystem(stats);
         }
 
         // api team calls this method 
-        public static string[] getIndexesUsage(string schema, string table) 
+        public static List<Dictionary<string, string>> getIndexesUsage(string schema, string table) 
         {
-            return getData($"indexusage/{schema}/{table}/*");
+            string[] stats = getData($"indexusage/{schema}/{table}/*");
+            return parseDataFromFileSystem(stats);
         }
 
         // api team calls this method   
-        public static string[] getIndexUsage() 
+        public static List<Dictionary<string, string>> getLongRunningQueries() 
         {
-            return getData("");
+            string[] stats = getData($"LongRunningQueries/timestamp1");
+            return parseDataFromFileSystem(stats);
         }
 
         // api team calls this method 
@@ -429,7 +441,7 @@ namespace Fourthwall
             // prettyPrint(reader);
             String[] result = retrieveResultTableData(reader);
             con.Close();
-            Array.ForEach(result, Console.WriteLine);
+            // Array.ForEach(result, Console.WriteLine);
             return result;
         }
 
