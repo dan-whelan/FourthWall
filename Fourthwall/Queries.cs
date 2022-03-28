@@ -16,24 +16,28 @@ namespace Fourthwall
 {
     internal class Queries
     {
-        private static string basePath = "C:/Users/harol/Documents";
+        private static string basePath = "";
         static void Main(string[] args)
         {
             //TestConnection();
             var root = Directory.GetCurrentDirectory();
             var dotenv = Path.Combine(root, ".env");
             DotEnv.Load(dotenv);
+            string? tmpBasePath = Environment.GetEnvironmentVariable("BASEPATH");
+            if (tmpBasePath == null) 
+            {
+                basePath = "";
+            } else basePath = tmpBasePath;
 
-            // modify the parameters below to the values of your local postgres table and schema, ensure query is valid as well
-            // string schema = "college";
-            // string table1 = "student";
-            // string table2 = "address";
-            // string query = $"SELECT * FROM {schema}.{table2} WHERE city = 'Kensington';";
+            string? schema = Environment.GetEnvironmentVariable("TEST_SCHEMA_1");
+            string? table1 = Environment.GetEnvironmentVariable("TEST_TABLE_1");
+            string? table2 = Environment.GetEnvironmentVariable("TEST_TABLE_2");
+            string? query = Environment.GetEnvironmentVariable("TEST_QUERY");
 
             storeTableStatistics();
             storeIndexStatistics();
-            // getTableData(schema, table1);
-            // getResultOfExplainAnalyze(query);
+            getTableData(schema, table1);
+            getResultOfExplainAnalyze(query);
             
             // test retrieving from file system
             Console.WriteLine("retrieving stats for the address table.");
@@ -70,7 +74,10 @@ namespace Fourthwall
         {
             string? database = Environment.GetEnvironmentVariable("DATABASE");
             string? password = Environment.GetEnvironmentVariable("PASSWORD");
-            return new NpgsqlConnection($"Server=localhost;Port=5432;User Id=postgres;Password={password};Database={database}");
+            string? userid = Environment.GetEnvironmentVariable("USERID");
+            string? port = Environment.GetEnvironmentVariable("PORT");
+            string? server = Environment.GetEnvironmentVariable("SERVER");
+            return new NpgsqlConnection($"Server={server};Port={port};User Id={userid};Password={password};Database={database}");
         }
 
         private static void storeTableStatistics() 
@@ -128,7 +135,7 @@ namespace Fourthwall
             //TODO : check if path exists if no * in it and use IFailure? see blob interface & coding standards 
             // if * ensure path before /* exists 
             // error checking for if line is an empty line at the end of the file
-            
+
             char lastChar = path[path.Length-1];
             if (lastChar.Equals('*')) 
             {
@@ -429,7 +436,7 @@ namespace Fourthwall
         }
 
         // api team calls this method 
-        public static string[] getTableData(string schema, string table) 
+        public static string[] getTableData(string? schema, string? table) 
         {
             //TODO - sanitise input to prevent sql injection 
             NpgsqlConnection con = GetConnection();
@@ -446,7 +453,7 @@ namespace Fourthwall
         }
 
         // api team calls this method 
-        public static string[] getResultOfExplainAnalyze(string query) 
+        public static string[] getResultOfExplainAnalyze(string? query) 
         {
             //TODO - sanitise input to prevent sql injection 
             NpgsqlConnection con = GetConnection();
