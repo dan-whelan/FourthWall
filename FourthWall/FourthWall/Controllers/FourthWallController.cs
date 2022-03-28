@@ -11,13 +11,14 @@ namespace FourthWall.Controllers
     [ApiController]
     public class FourthWallController : ControllerBase
     {
-        private DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<>)); 
+        private DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<Dictionary<string, string>>));
+        private DataContractJsonSerializer dictSerializer = new DataContractJsonSerializer(typeof(Dictionary<string, string>));
         [HttpGet("/api/queries/{from:datetime?}/{to:datetime?}")]
         public IActionResult getQueries(DateTime from, DateTime to)
         {
             try
             {
-                Dictionary<> queries = getQueries(from, to);
+                List<Dictionary<string, string>> queries = getQueries(from, to);
                 if (queries != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -37,37 +38,37 @@ namespace FourthWall.Controllers
 
         }
 
-        [HttpGet("/api/transactions")]
-        public IActionResult getTransactions()
-        {
-            try
-            {
-                Dictionary<> transactions = getOpenTransactions();
-                if (transactions != null)
-                {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        serializer.WriteObject(ms, transactions);
-                        Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
-                        return Ok(JsonSerializer.Serialize(transactions));
-                    }
-                }
-                return NotFound();
+        //[HttpGet("/api/transactions")]
+        //public IActionResult getTransactions()
+        //{
+        //    try
+        //    {
+        //        Dictionary<string, string> transactions = getOpenTransactions();
+        //        if (transactions != null)
+        //        {
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                serializer.WriteObject(ms, transactions);
+        //                Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+        //                return Ok(JsonSerializer.Serialize(transactions));
+        //            }
+        //        }
+        //        return NotFound();
 
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: " + e.Message);
-                return NotFound();
-            }
-        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine("Error: " + e.Message);
+        //        return NotFound();
+        //    }
+        //}
 
         [HttpGet("/api/statistics/{schema}/{table}")]
         public IActionResult getTableStats(string schema, string table)
         {
             try
             {
-                Dictionary<> tableStats = getTableStats(schema, table);
+                List<Dictionary<string, string>> tableStats = getTableStats(schema, table);
                 if (tableStats != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -92,7 +93,7 @@ namespace FourthWall.Controllers
         {
             try
             {
-                Dictionary<> indexUsage = getIndexUsage(schema, table, index);
+                List<Dictionary<string, string>> indexUsage = getIndexUsage(schema, table, index);
                 if (indexUsage != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -116,8 +117,8 @@ namespace FourthWall.Controllers
         {
             try
             {
-                Dictionary<> allIndexUsage = getIndexesUsage(schema, table);
-                if (allIndexUsage)
+                List<Dictionary<string, string>> allIndexUsage = getIndexesUsage(schema, table);
+                if (allIndexUsage != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
@@ -140,7 +141,7 @@ namespace FourthWall.Controllers
         {
             try
             {
-                Dictionary<> response = getResultOfExplainAnalyse(query);
+                Dictionary<string, string> response = getResultOfExplainAnalyse(query);
                 if (response != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -164,12 +165,12 @@ namespace FourthWall.Controllers
         {
             try
             {
-                Dictionary<> tableData = getTableData(schema, table);
+                List<Dictionary<string, string>> tableData = getTableData(schema, table);
                 if (tableData != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        serializer.WriteObject(ms, tableData);
+                        dictSerializer.WriteObject(ms, tableData);
                         Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
                         return Ok(JsonSerializer.Serialize(tableData));
                     }
