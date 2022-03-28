@@ -141,11 +141,9 @@
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/FourthWall.MvcApplicationPartsAssemblyInfo.cs
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/FourthWall.MvcApplicationPartsAssemblyInfo.cache
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/FourthWall.dll
-/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/refint/FourthWall.dll
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/FourthWall.pdb
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/appsettings.Development.json
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/appsettings.json
-/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/FourthWall
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/FourthWall.deps.json
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/FourthWall.runtimeconfig.json
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/FourthWall.runtimeconfig.dev.json
@@ -269,3 +267,4 @@
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/FourthWall.csproj.CopyComplete
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/FourthWall.genruntimeconfig.cache
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/ref/FourthWall.dll
+/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/ref/FourthWall.dll

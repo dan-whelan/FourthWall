@@ -6,16 +6,16 @@ import random
 load_dotenv()
 
 def connect():
-    conn = psycopg2.connect(f"dbname=finbourne user=postgres password={os.getenv('PASSWORD')}")
+    conn = psycopg2.connect(f"dbname=dwhelan user=postgres password={os.getenv('PASSWORD')}")
     if not conn.closed:
-        print("Connected to Postgresql database, 'finbourne'.")
+        print("Connected to Postgresql database, 'dwhelan'.")
     
     return conn
 
 def disconnect(conn):
     conn.close()
     if conn.closed:
-        print("Disconnected from the Postgresql database, 'finbourne'.")
+        print("Disconnected from the Postgresql database, 'dwhelan'.")
 
 def get_length_of_address_table() -> int:
     sql = "SELECT count(*) FROM college.address;"

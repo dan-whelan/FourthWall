@@ -13,49 +13,49 @@ using System.Reflection.Emit;
 
 namespace Fourthwall
 {
-    internal class Queries
+    public class Queries
     {
         private static string basePath = "";
-        static void Main(string[] args)
-        {
-            //TestConnection();
-            var root = Directory.GetCurrentDirectory();
-            var dotenv = Path.Combine(root, ".env");
-            DotEnv.Load(dotenv);
-            string? tmpBasePath = Environment.GetEnvironmentVariable("BASEPATH");
-            if (tmpBasePath == null)
-            {
-                basePath = "";
-            }
-            else basePath = tmpBasePath;
+        //static void Main(string[] args)
+        //{
+        //    //TestConnection();
+        //    var root = Directory.GetCurrentDirectory();
+        //    var dotenv = Path.Combine(root, ".env");
+        //    DotEnv.Load(dotenv);
+        //    string? tmpBasePath = Environment.GetEnvironmentVariable("BASEPATH");
+        //    if (tmpBasePath == null)
+        //    {
+        //        basePath = "";
+        //    }
+        //    else basePath = tmpBasePath;
 
-            string? schema = Environment.GetEnvironmentVariable("TEST_SCHEMA_1");
-            string? table1 = Environment.GetEnvironmentVariable("TEST_TABLE_1");
-            string? table2 = Environment.GetEnvironmentVariable("TEST_TABLE_2");
-            string? query = Environment.GetEnvironmentVariable("TEST_QUERY");
+        //    string? schema = Environment.GetEnvironmentVariable("TEST_SCHEMA_1");
+        //    string? table1 = Environment.GetEnvironmentVariable("TEST_TABLE_1");
+        //    string? table2 = Environment.GetEnvironmentVariable("TEST_TABLE_2");
+        //    string? query = Environment.GetEnvironmentVariable("TEST_QUERY");
 
-            storeTableStatistics();
-            storeIndexStatistics();
-            getTableData(schema, table1);
-            getResultOfExplainAnalyze(query);
+        //    storeTableStatistics();
+        //    storeIndexStatistics();
+        //    getTableData(schema, table1);
+        //    getResultOfExplainAnalyze(query);
 
-            // test retrieving from file system
-            Console.WriteLine("retrieving stats for the address table.");
-            getTableStats("college", "address");
+        //    // test retrieving from file system
+        //    Console.WriteLine("retrieving stats for the address table.");
+        //    getTableStats("college", "address");
 
-            Console.WriteLine("\nretrieving usage for the idx_address_city index.");
-            getIndexUsage("college", "address", "idx_address_city");
+        //    Console.WriteLine("\nretrieving usage for the idx_address_city index.");
+        //    getIndexUsage("college", "address", "idx_address_city");
 
-            Console.WriteLine("\nretrieving usage for all indexes in the address table.");
-            getIndexesUsage("college", "address");
+        //    Console.WriteLine("\nretrieving usage for all indexes in the address table.");
+        //    getIndexesUsage("college", "address");
 
-            Console.WriteLine("\nretrieving usage for all indexes in student table.");
-            getIndexesUsage("college", "student");
+        //    Console.WriteLine("\nretrieving usage for all indexes in student table.");
+        //    getIndexesUsage("college", "student");
 
-            Console.WriteLine("\nretrieving long running queries for timestamp1");
-            getLongRunningQueries();
+        //    Console.WriteLine("\nretrieving long running queries for timestamp1");
+        //    getLongRunningQueries();
 
-        }
+        //}
 
 
         //tests connection between program and database

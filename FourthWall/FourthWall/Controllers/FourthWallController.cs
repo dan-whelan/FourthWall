@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using FourthWall.Models;
 
 namespace FourthWall.Controllers
 {
@@ -14,11 +15,12 @@ namespace FourthWall.Controllers
         private DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<Dictionary<string, string>>));
         private DataContractJsonSerializer dictSerializer = new DataContractJsonSerializer(typeof(Dictionary<string, string>));
         [HttpGet("/api/queries/{from:datetime?}/{to:datetime?}")]
-        public IActionResult getQueries(DateTime from, DateTime to)
+        public IActionResult getQueriesAPI(DateTime from, DateTime to)
         {
             try
             {
-                List<Dictionary<string, string>> queries = getQueries(from, to);
+                List<Dictionary<string, string>> queries = FourthWall.Program
+                    .getLongRunningQueries();
                 if (queries != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -64,11 +66,11 @@ namespace FourthWall.Controllers
         //}
 
         [HttpGet("/api/statistics/{schema}/{table}")]
-        public IActionResult getTableStats(string schema, string table)
+        public IActionResult getTableStatsAPI(string schema, string table)
         {
             try
             {
-                List<Dictionary<string, string>> tableStats = getTableStats(schema, table);
+                List<Dictionary<string, string>> tableStats = FourthWall.Program.getTableStats(schema, table);
                 if (tableStats != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -89,11 +91,11 @@ namespace FourthWall.Controllers
         }
 
         [HttpGet("/api/indexes/{schema}/{table}/{index}")]
-        public IActionResult getIndexUsage(string schema, string table, string index)
+        public IActionResult getIndexUsageAPI(string schema, string table, string index)
         {
             try
             {
-                List<Dictionary<string, string>> indexUsage = getIndexUsage(schema, table, index);
+                List<Dictionary<string, string>> indexUsage = FourthWall.Program.getIndexUsage(schema, table, index);
                 if (indexUsage != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -113,11 +115,11 @@ namespace FourthWall.Controllers
         }
 
         [HttpGet("/api/indexes/{schema}/{table}")]
-        public IActionResult getAllIndexUsage(string schema, string table)
+        public IActionResult getAllIndexUsageAPI(string schema, string table)
         {
             try
             {
-                List<Dictionary<string, string>> allIndexUsage = getIndexesUsage(schema, table);
+                List<Dictionary<string, string>> allIndexUsage = FourthWall.Program.getIndexesUsage(schema, table);
                 if (allIndexUsage != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -137,16 +139,16 @@ namespace FourthWall.Controllers
         }
 
         [HttpPost("/api/query/")]
-        public IActionResult postExplainAnalyse([FromBody]string query)
+        public IActionResult postExplainAnalyseAPI([FromBody] Query q)
         {
             try
             {
-                Dictionary<string, string> response = getResultOfExplainAnalyse(query);
+                Dictionary<string, string> response = FourthWall.Program.getResultOfExplainAnalyze(q.query);
                 if (response != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        serializer.WriteObject(ms, response);
+                        dictSerializer.WriteObject(ms, response);
                         Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
                         return Ok(JsonSerializer.Serialize(response));
                     }
@@ -161,16 +163,16 @@ namespace FourthWall.Controllers
         }
 
         [HttpGet("/api/data/{schema}/{table}")]
-        public IActionResult getSystemTableData(string schema, string table)
+        public IActionResult getSystemTableDataAPI(string schema, string table)
         {
             try
             {
-                List<Dictionary<string, string>> tableData = getTableData(schema, table);
+                List<Dictionary<string, string>> tableData = FourthWall.Program.getTableData(schema, table);
                 if (tableData != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        dictSerializer.WriteObject(ms, tableData);
+                        serializer.WriteObject(ms, tableData);
                         Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
                         return Ok(JsonSerializer.Serialize(tableData));
                     }
