@@ -187,6 +187,17 @@ namespace Fourthwall
             return list;
         }
 
+        private static Dictionary<string, string> parseLongRunningQueries(string[] data) 
+        {
+            string queryPlan = data[1];
+            Dictionary<string, string> map = new Dictionary<string, string>();
+
+            map.Add("queryPlan", queryPlan);
+            map.ToList().ForEach(x => Console.WriteLine(x));
+
+            return map;
+        }
+
         private static void retrieveTableStatsAndPersist(NpgsqlCommand cmd) {
             NpgsqlDataReader reader = cmd.ExecuteReader();
             int tableindex = 0;
@@ -436,7 +447,7 @@ namespace Fourthwall
         }
 
         // api team calls this method 
-        public static string[] getTableData(string? schema, string? table) 
+        public static List<Dictionary<string, string>> getTableData(string? schema, string? table) 
         {
             //TODO - sanitise input to prevent sql injection 
             NpgsqlConnection con = GetConnection();
@@ -446,14 +457,16 @@ namespace Fourthwall
             NpgsqlDataReader reader = cmd.ExecuteReader();
 
             // prettyPrint(reader);
-            String[] result = retrieveResultTableData(reader);
+            String[] tableData = retrieveResultTableData(reader);
+            List<Dictionary<string, string>> result = parseDataFromFileSystem(tableData);
+            
             con.Close();
-            // Array.ForEach(result, Console.WriteLine);
+
             return result;
         }
 
         // api team calls this method 
-        public static string[] getResultOfExplainAnalyze(string? query) 
+        public static Dictionary<string, string> getResultOfExplainAnalyze(string? query) 
         {
             //TODO - sanitise input to prevent sql injection 
             NpgsqlConnection con = GetConnection();
@@ -463,9 +476,11 @@ namespace Fourthwall
             NpgsqlDataReader reader = cmd.ExecuteReader();
             // prettyPrint(reader);
 
-            string[] result = retrieveResultExplainAnalyze(reader);
+            string[] queryPlan = retrieveResultExplainAnalyze(reader);
+            Dictionary<string, string> result = parseLongRunningQueries(queryPlan);
+
             con.Close();
-            Array.ForEach(result, Console.WriteLine);
+
             return result;
         }
 
