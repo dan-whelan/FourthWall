@@ -166,7 +166,7 @@ namespace Fourthwall
             }
         }
 
-        private static List<Dictionary<string, string>> parseDataFromFileSystem(string[] data) 
+        private static List<Dictionary<string, string>> parseData(string[] data) 
         {   
             // case 1, 1 line header, 1 line stats -> table stats, index usage 
             // case 2, 1 line header, more than 1 line stats -> long running queries 
@@ -422,28 +422,28 @@ namespace Fourthwall
         public static List<Dictionary<string, string>> getTableStats(string schema, string table) 
         {
             string[] stats = getData($"tablestats/{schema}/{table}");
-            return parseDataFromFileSystem(stats);
+            return parseData(stats);
         }
 
         // api team calls this method 
         public static List<Dictionary<string, string>> getIndexUsage(string schema, string table, string index) 
         {
             string[]stats = getData($"indexusage/{schema}/{table}/{index}");
-            return parseDataFromFileSystem(stats);
+            return parseData(stats);
         }
 
         // api team calls this method 
         public static List<Dictionary<string, string>> getIndexesUsage(string schema, string table) 
         {
             string[] stats = getData($"indexusage/{schema}/{table}/*");
-            return parseDataFromFileSystem(stats);
+            return parseData(stats);
         }
 
         // api team calls this method   
         public static List<Dictionary<string, string>> getLongRunningQueries() 
         {
             string[] stats = getData($"LongRunningQueries/timestamp1");
-            return parseDataFromFileSystem(stats);
+            return parseData(stats);
         }
 
         // api team calls this method 
@@ -458,7 +458,7 @@ namespace Fourthwall
 
             // prettyPrint(reader);
             String[] tableData = retrieveResultTableData(reader);
-            List<Dictionary<string, string>> result = parseDataFromFileSystem(tableData);
+            List<Dictionary<string, string>> result = parseData(tableData);
             
             con.Close();
 
