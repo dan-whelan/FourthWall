@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System.IO;
-using System.Net.Http;
 using System.Text;
 using Npgsql;
 using System.Data;
-using System.Reflection;
-using System.Reflection.Emit;
 using Fourthwall;
-using FourthWall.Models;
 
 namespace FourthWall
 {
@@ -22,42 +15,49 @@ namespace FourthWall
     {
         public static void Main(string[] args)
         {
-            var root = Directory.GetCurrentDirectory();
-            var dotenv = Path.Combine(root, ".env");
-            DotEnv.Load(dotenv);
-            string tmpBasePath = Environment.GetEnvironmentVariable("BASEPATH");
-            if (tmpBasePath == null)
+            try
             {
-                basePath = "";
+                var root = Directory.GetCurrentDirectory();
+                var dotenv = Path.Combine(root, ".env");
+                DotEnv.Load(dotenv);
+                string tmpBasePath = Environment.GetEnvironmentVariable("BASEPATH");
+                if (tmpBasePath == null)
+                {
+                    basePath = "";
+                }
+                else basePath = tmpBasePath;
+
+                string schema = Environment.GetEnvironmentVariable("TEST_SCHEMA_1");
+                string table1 = Environment.GetEnvironmentVariable("TEST_TABLE_1");
+                string table2 = Environment.GetEnvironmentVariable("TEST_TABLE_2");
+                string query = Environment.GetEnvironmentVariable("TEST_QUERY");
+
+                storeTableStatistics();
+                storeIndexStatistics();
+                getTableData(schema, table1);
+                getResultOfExplainAnalyze(query);
+
+                // test retrieving from file system
+                //Console.WriteLine("retrieving stats for the address table.");
+                //getTableStats("college", "address");
+
+                //Console.WriteLine("\nretrieving usage for the idx_address_city index.");
+                //getIndexUsage("college", "address", "idx_address_city");
+
+                //Console.WriteLine("\nretrieving usage for all indexes in the address table.");
+                //getIndexesUsage("college", "address");
+
+                //Console.WriteLine("\nretrieving usage for all indexes in student table.");
+                //getIndexesUsage("college", "student");
+
+                //Console.WriteLine("\nretrieving long running queries for timestamp1");
+                //getLongRunningQueries();
+
+                CreateHostBuilder(args).Build().Run();
+            } catch(Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
             }
-            else basePath = tmpBasePath;
-
-            string schema = Environment.GetEnvironmentVariable("TEST_SCHEMA_1");
-            string table1 = Environment.GetEnvironmentVariable("TEST_TABLE_1");
-            string table2 = Environment.GetEnvironmentVariable("TEST_TABLE_2");
-            string query = Environment.GetEnvironmentVariable("TEST_QUERY");
-
-            storeTableStatistics();
-            storeIndexStatistics();
-            getTableData(schema, table1);
-            getResultOfExplainAnalyze(query);
-
-            // test retrieving from file system
-            Console.WriteLine("retrieving stats for the address table.");
-            getTableStats("college", "address");
-
-            Console.WriteLine("\nretrieving usage for the idx_address_city index.");
-            getIndexUsage("college", "address", "idx_address_city");
-
-            Console.WriteLine("\nretrieving usage for all indexes in the address table.");
-            getIndexesUsage("college", "address");
-
-            Console.WriteLine("\nretrieving usage for all indexes in student table.");
-            getIndexesUsage("college", "student");
-
-            //Console.WriteLine("\nretrieving long running queries for timestamp1");
-            //getLongRunningQueries();
-            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

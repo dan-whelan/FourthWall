@@ -6,14 +6,18 @@ using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using FourthWall.Models;
+using FourthWall.Attributes;
 /*|-------------------------------------------------------------------------------------------|
  * FourthWall API Controller
  * 
  * Controller that enables API to make use of GET and POST requests from Monitoring System
+ * 
+ * NEEDS TEST SUITE
  *|-------------------------------------------------------------------------------------------|
  */
 namespace FourthWall.Controllers
 {
+    [ApiKey]
     [ApiController]
     public class FourthWallController : ControllerBase
     {
@@ -122,7 +126,15 @@ namespace FourthWall.Controllers
         {
             try
             {
-                List<Dictionary<string, string>> tableStats = FourthWall.Program.getTableStats(schema, table);
+                List<Dictionary<string, string>> tableStats;
+                if (schema != null && table != null)
+                {
+                    tableStats = FourthWall.Program.getTableStats(schema, table);
+                }
+                else
+                {
+                    return NotFound();
+                }
                 if (tableStats != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
