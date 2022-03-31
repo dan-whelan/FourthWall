@@ -12,6 +12,7 @@ that can be accessed through the use of an authenticated API.
 To create an API request to the service the following methods can be used:
 - Terminal
     While the project is running input following for unix terminal for general GET request
+    
     curl -X GET https://localhost:<port_number>/api/<api_call>/<param_1>/... -H "ApiKey: <api_key>"
 
 - Calls
