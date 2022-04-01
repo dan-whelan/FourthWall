@@ -36,7 +36,7 @@ namespace Fourthwall
 
             storeTableStatistics();
             storeIndexStatistics();
-            getTableData(schema, table1);
+            // getTableData(schema, table1);
             getResultOfExplainAnalyze(query);
             
             // test retrieving from file system
@@ -187,9 +187,10 @@ namespace Fourthwall
             return list;
         }
 
-        private static Dictionary<string, string> parseLongRunningQueries(string[] data) 
+        private static Dictionary<string, string> parseExplainAnalyze(string[] data) 
         {
             string queryPlan = data[1];
+            // Console.WriteLine(data.Length);
             Dictionary<string, string> map = new Dictionary<string, string>();
 
             map.Add("queryPlan", queryPlan);
@@ -326,6 +327,7 @@ namespace Fourthwall
 
         private static string[] retrieveResultExplainAnalyze(NpgsqlDataReader reader) 
         {
+            List<string> tableData = new List<string>();
             StringBuilder headers = new System.Text.StringBuilder();
             StringBuilder stats = new System.Text.StringBuilder();
             for (int i = 0; i < reader.FieldCount; i++) 
@@ -336,6 +338,7 @@ namespace Fourthwall
                     headers.Append(',');
                 }
             }
+            tableData.Add(headers.ToString());
 
             while (reader.Read()) 
             {
@@ -348,10 +351,11 @@ namespace Fourthwall
                         stats.Append(',');
                     }
                 }
+                stats.Append('\n');
             }
+            tableData.Add(stats.ToString());
 
-            string[] result = {headers.ToString(), stats.ToString()};
-            return result;
+            return tableData.ToArray();
         }
 
         private static string[] retrieveResultTableData(NpgsqlDataReader reader) 
@@ -414,7 +418,7 @@ namespace Fourthwall
                 sb.Append('\n');
                 if (++rowCount >= 10) break;
             }
-        
+            Console.WriteLine(rowCount);
             Console.WriteLine(sb);
         }
 
@@ -474,10 +478,10 @@ namespace Fourthwall
             string sql = $"EXPLAIN ANALYZE {query}";
             NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
             NpgsqlDataReader reader = cmd.ExecuteReader();
-            // prettyPrint(reader);
+            //prettyPrint(reader);
 
             string[] queryPlan = retrieveResultExplainAnalyze(reader);
-            Dictionary<string, string> result = parseLongRunningQueries(queryPlan);
+            Dictionary<string, string> result = parseExplainAnalyze(queryPlan);
 
             con.Close();
 
