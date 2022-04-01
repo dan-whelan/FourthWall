@@ -32,7 +32,7 @@ namespace Fourthwall
             string? schema = Environment.GetEnvironmentVariable("TEST_SCHEMA_1");
             string? table1 = Environment.GetEnvironmentVariable("TEST_TABLE_1");
             string? table2 = Environment.GetEnvironmentVariable("TEST_TABLE_2");
-            string? query = Environment.GetEnvironmentVariable("TEST_QUERY");
+            string? query = "Select * from college.address where city = 'Kensington';"; //Environment.GetEnvironmentVariable("TEST_QUERY");
 
             storeTableStatistics();
             storeIndexStatistics();
@@ -194,7 +194,7 @@ namespace Fourthwall
             Dictionary<string, string> map = new Dictionary<string, string>();
 
             map.Add("queryPlan", queryPlan);
-            map.ToList().ForEach(x => Console.WriteLine(x));
+            map.ToList().ForEach(x => Console.WriteLine(x.Value));
 
             return map;
         }
