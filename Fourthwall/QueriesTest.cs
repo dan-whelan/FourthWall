@@ -22,41 +22,41 @@ namespace Fourthwall
             Clean();
         }
 
-        // [Fact]
-        // public void TestExplainAnalyze() 
-        // {
-            
-        // }
+        [Fact]
+        public void TestExplainAnalyze() 
+        {
+            Assert.True(true);
+        }
 
-        // [Fact]
-        // public void TestTableStats() 
-        // {
+        [Fact]
+        public void TestTableStats() 
+        {
+            Assert.True(true);
+        }
 
-        // }
-
-        // [Fact]
-        // public void TestIndexUsage() 
-        // {
-
-        // }
+        [Fact]
+        public void TestIndexUsage() 
+        {
+            Assert.True(true);
+        }
         
-        // [Fact]
-        // public void TestIndexesInTableUsage() 
-        // {
+        [Fact]
+        public void TestIndexesInTableUsage() 
+        {
+            Assert.True(true);
+        }
 
-        // }
+        [Fact]
+        public void TestLongRunningQueries() 
+        {
+            Assert.True(true);
+        }
 
-        // [Fact]
-        // public void TestLongRunningQueries() 
-        // {
-
-        // }
-
-        // [Fact]
-        // public void TestOpenTransactions() 
-        // {
-
-        // }
+        [Fact]
+        public void TestOpenTransactions() 
+        {
+            Assert.True(true);
+        }
 
         private void CreateTestSchema() 
         {
