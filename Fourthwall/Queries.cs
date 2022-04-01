@@ -168,12 +168,6 @@ namespace Fourthwall
 
         private static List<Dictionary<string, string>> parseData(string[] data) 
         {   
-            // case 1, 1 line header, 1 line stats -> table stats, index usage 
-            // case 2, 1 line header, more than 1 line stats -> long running queries 
-            // case 3, 1 line name of index, 1 line header, 1 line stats, for each index in the table -> index usage for all indexes in a table 
-            // note about case 3 redundant having headers for each index but keeps implementation simple. 
-            // safe to assume N will never be large, where N is the number of indexes in one table 
-
             string[] headers = data[0].Split(',');
             var list = new List<Dictionary<string, string>>();
             for (int i = 1; i < data.Length; i++) 
