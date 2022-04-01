@@ -457,7 +457,7 @@ namespace Fourthwall
             // prettyPrint(reader);
             String[] tableData = retrieveResultTableData(reader);
             List<Dictionary<string, string>> result = parseData(tableData);
-            
+
             con.Close();
 
             return result;
