@@ -1,6 +1,7 @@
 using System.Text;
 using Npgsql;
 using System.Data;
+using System.Threading;
 
 namespace Fourthwall 
 {
@@ -9,42 +10,32 @@ namespace Fourthwall
         private static string basePath = "";
         static void Main(string[] args)
         {
-            //TestConnection();
             var root = Directory.GetCurrentDirectory();
             var dotenv = Path.Combine(root, ".env");
             DotEnv.Load(dotenv);
             string? tmpBasePath = Environment.GetEnvironmentVariable("BASEPATH");
+            string? timeIntervalString = Environment.GetEnvironmentVariable("POLLING_INTERVAL_MILLISECONDS");
+            int timeInterval;
+            if (!int.TryParse(timeIntervalString, out timeInterval)) 
+            {
+                timeInterval = 15000;
+            }
             if (tmpBasePath == null) 
             {
                 basePath = "";
             } else basePath = tmpBasePath;
 
-            string? schema = Environment.GetEnvironmentVariable("TEST_SCHEMA_1");
-            string? table1 = Environment.GetEnvironmentVariable("TEST_TABLE_1");
-            string? table2 = Environment.GetEnvironmentVariable("TEST_TABLE_2");
-            string? query = "Select * from college.address where city = 'Kensington';"; //Environment.GetEnvironmentVariable("TEST_QUERY");
-
-            storeTableStatistics();
-            storeIndexStatistics();
-            // getTableData(schema, table1);
-            getResultOfExplainAnalyze(query);
-            
-            // test retrieving from file system
-            Console.WriteLine("retrieving stats for the address table.");
-            getTableStats("college", "address");
-
-            Console.WriteLine("\nretrieving usage for the idx_address_city index.");
-            getIndexUsage("college", "address", "idx_address_city");
-
-            Console.WriteLine("\nretrieving usage for all indexes in the address table.");
-            getIndexesUsage("college", "address");
-
-            Console.WriteLine("\nretrieving usage for all indexes in student table.");
-            getIndexesUsage("college", "student");
-            
-            Console.WriteLine("\nretrieving long running queries for timestamp1");
-            getLongRunningQueries();
-
+            while (true) 
+            {
+                Console.Write("Start time: ");
+                Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
+                storeTableStatistics();
+                storeIndexStatistics();
+                Console.Write("End time: ");
+                Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
+                Console.WriteLine();
+                Thread.Sleep(timeInterval);
+            }
         }
 
 
@@ -62,6 +53,7 @@ namespace Fourthwall
         }
         private static NpgsqlConnection GetConnection()
         {
+            // TODO Error handling here 
             string? database = Environment.GetEnvironmentVariable("DATABASE");
             string? password = Environment.GetEnvironmentVariable("PASSWORD");
             string? userid = Environment.GetEnvironmentVariable("USERID");
