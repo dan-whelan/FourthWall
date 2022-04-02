@@ -18,7 +18,7 @@ namespace Fourthwall
         {
             Setup();
             List<Dictionary<string, string>> data = getData();
-            Assert.True(isDataEqual(data, Queries.getTableData("testSchema", "testTable")));
+            Assert.True(isDataEqual(data, Program.getTableData("testSchema", "testTable")));
             Clean();
         }
 
