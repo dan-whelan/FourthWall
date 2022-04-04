@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+2606,2664,pg_catalog,pg_constraint,pg_constraint_conname_nsp_index,3,0,0

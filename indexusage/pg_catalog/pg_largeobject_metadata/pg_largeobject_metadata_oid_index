@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+2995,2996,pg_catalog,pg_largeobject_metadata,pg_largeobject_metadata_oid_index,0,0,0

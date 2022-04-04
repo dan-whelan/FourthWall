@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+2620,2702,pg_catalog,pg_trigger,pg_trigger_oid_index,4,0,0

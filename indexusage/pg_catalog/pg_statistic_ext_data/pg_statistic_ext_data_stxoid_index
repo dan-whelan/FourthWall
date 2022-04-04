@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+3429,3433,pg_catalog,pg_statistic_ext_data,pg_statistic_ext_data_stxoid_index,0,0,0

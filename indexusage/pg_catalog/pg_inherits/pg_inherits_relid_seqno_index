@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+2611,2680,pg_catalog,pg_inherits,pg_inherits_relid_seqno_index,0,0,0

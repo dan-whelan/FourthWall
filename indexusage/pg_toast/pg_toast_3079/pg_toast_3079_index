@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+4147,4148,pg_toast,pg_toast_3079,pg_toast_3079_index,0,0,0

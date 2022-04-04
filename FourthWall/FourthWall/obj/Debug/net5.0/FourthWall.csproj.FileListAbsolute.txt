@@ -266,5 +266,10 @@
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/FourthWall.RazorTargetAssemblyInfo.cache
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/FourthWall.csproj.CopyComplete
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/FourthWall.genruntimeconfig.cache
-/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/ref/FourthWall.dll
+/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/xunit.abstractions.dll
+/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/xunit.assert.dll
+/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/xunit.core.dll
+/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/xunit.execution.dotnet.dll
+/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/FourthWall
+/Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/obj/Debug/net5.0/refint/FourthWall.dll
 /Users/dwhelan/Desktop/Computer Science/Sweng/FourthWall/FourthWall/FourthWall/bin/Debug/net5.0/ref/FourthWall.dll

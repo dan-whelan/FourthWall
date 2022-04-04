@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+2964,2965,pg_catalog,pg_db_role_setting,pg_db_role_setting_databaseid_rol_index,86648,0,0

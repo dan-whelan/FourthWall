@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+3350,3351,pg_catalog,pg_partitioned_table,pg_partitioned_table_partrelid_index,0,0,0

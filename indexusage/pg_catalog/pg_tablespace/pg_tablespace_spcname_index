@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+1213,2698,pg_catalog,pg_tablespace,pg_tablespace_spcname_index,0,0,0

@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+2832,2833,pg_toast,pg_toast_2606,pg_toast_2606_index,0,0,0

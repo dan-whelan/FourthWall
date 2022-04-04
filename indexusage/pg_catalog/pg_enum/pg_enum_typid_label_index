@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+3501,3503,pg_catalog,pg_enum,pg_enum_typid_label_index,0,0,0

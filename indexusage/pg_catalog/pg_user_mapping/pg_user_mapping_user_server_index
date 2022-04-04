@@ -1,0 +1,2 @@
+relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
+1418,175,pg_catalog,pg_user_mapping,pg_user_mapping_user_server_index,0,0,0

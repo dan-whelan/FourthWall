@@ -18,7 +18,6 @@ namespace FourthWall
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddSwaggerGen();
             services.AddControllers();
         }
 
@@ -28,8 +27,6 @@ namespace FourthWall
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseSwagger();
-                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "FourthWall v1"));
             }
 
             app.UseHttpsRedirection();
