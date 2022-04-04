@@ -12,16 +12,20 @@ that can be accessed through the use of an authenticated API.
 To create an API request to the service the following methods can be used:
 - Terminal
     While the project is running input following for unix terminal for general GET request
+    
     curl -X GET https://localhost:<port_number>/api/<api_call>/<param_1>/... -H "ApiKey: <api_key>"
 
 - Calls
     For Statistics:
+        
         curl -X GET https://localhost:<port_number>/api/statistics/{schema}/{table} -H "ApiKey: <api_key>"
    
     For Long Running Queries:
+        
         curl -X GET https://localhost:<port_number>/api/queries/{from}/{to} -H "ApiKey: <api_key>"
    
     For Index Usage 
+        
         (Specified Index):
         curl -X GET https://localhost:<port_number>/api/indexes/{schema}/{table}/{indexName} -H "ApiKey: <api_key>"
         
@@ -29,9 +33,11 @@ To create an API request to the service the following methods can be used:
         curl -X GET https://localhost:<port_number>/api/indexes/{schema}/{table} -H "ApiKey: <api_key>"
     
     For Explain Analyse POST request:
+        
         curl -X POST https://localhost:<port_number>/api/query/ -H "ApiKey: <api_key>" -H "Content-Type: application/json" -d '{"query": "<query>;"}'
     
     For All Table Data:
+        
         curl -X GET  https://localhost:<port_number>/api/data/{schema}/{table} -H "ApiKey: <api_key>"
 
 ##Authentication
