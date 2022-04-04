@@ -153,8 +153,8 @@ namespace Fourthwall
             Assert.Equal(data1.Count, data2.Count);
 
             for (int i = 0; i < data1.Count; i++) {
-                var dict1 = data1.ElementAt(i);
-                var dict2 = data2.ElementAt(i);
+                var dict1 = data1[i];
+                var dict2 = data2[i];
                 if (!CompareDict(dict1, dict2)) 
                 {
                     return false;
