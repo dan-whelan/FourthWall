@@ -37,7 +37,7 @@ namespace FourthWall
                     basePath = "";
                 }
                 else basePath = tmpBasePath;
-                CreateHostBuilder(args).Build();
+                CreateHostBuilder(args).Build().Run();
             } catch(Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);

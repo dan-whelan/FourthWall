@@ -1,23 +1,26 @@
 ﻿<Properties StartupConfiguration="{4892FE54-BF41-4E29-9E26-DA71342E4F8F}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="FourthWall/QueriesTest.cs">
+  <MonoDevelop.Ide.ItemProperties.FourthWall.Tests FirstBuild="True" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="FourthWall.Tests/APITest.cs">
     <Files>
-      <File FileName="FourthWall/Controllers/FourthWallController.cs" Line="21" Column="20" />
-      <File FileName="FourthWall/Program.cs" Line="46" Column="44" />
-      <File FileName="FourthWall/Startup.cs" Line="29" Column="49" />
-      <File FileName="FourthWall/QueriesTest.cs" Line="216" Column="2" />
+      <File FileName="FourthWall/Controllers/FourthWallController.cs" Line="167" Column="21" />
+      <File FileName="FourthWall/Program.cs" Line="1" Column="1" />
+      <File FileName="FourthWall/Startup.cs" Line="1" Column="1" />
+      <File FileName="FourthWall.Tests/APITest.cs" Line="51" Column="13" />
+      <File FileName="FourthWall/Models/Query.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="FourthWall" expanded="True">
             <Node name="FourthWall" expanded="True">
-              <Node name="QueriesTest.cs" selected="True" />
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True" />
+            </Node>
+            <Node name="FourthWall.Tests" expanded="True">
+              <Node name="APITest.cs" selected="True" />
             </Node>
           </Node>
         </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
