@@ -5,7 +5,7 @@
       <File FileName="FourthWall/Controllers/FourthWallController.cs" Line="167" Column="21" />
       <File FileName="FourthWall/Program.cs" Line="1" Column="1" />
       <File FileName="FourthWall/Startup.cs" Line="1" Column="1" />
-      <File FileName="FourthWall.Tests/APITest.cs" Line="51" Column="13" />
+      <File FileName="FourthWall.Tests/APITest.cs" Line="46" Column="9" />
       <File FileName="FourthWall/Models/Query.cs" Line="1" Column="1" />
     </Files>
     <Pads>
