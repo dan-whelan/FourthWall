@@ -27,6 +27,9 @@ namespace FourthWall.Controllers
         //serializer that allows for the conversion of type Dictionary<string, string> to JSON format
         private DataContractJsonSerializer dictSerializer = new DataContractJsonSerializer(typeof(Dictionary<string, string>));
 
+        //serializer that allows for the conversion of type Dictionary<string, List<Dictionary<string, string>>>
+        private DataContractJsonSerializer dictListSerializer = new DataContractJsonSerializer(typeof(Dictionary<string, List<Dictionary<string, string>>>));
+
         /*|--------------------------------------------------------------------------------------------|
          * getQueries()
          * 
@@ -45,14 +48,17 @@ namespace FourthWall.Controllers
         [HttpGet("/api/queries/{from:datetime?}/{to:datetime?}")]
         public IActionResult getQueriesAPI(DateTime? from, DateTime? to)
         {
-            if(from == null || to == null)
+            if (to == null)
             {
-                from = DateTime.Now.AddMinutes(-5);
                 to = DateTime.Now;
             }
+            else if(from == null)
+            {
+                from = DateTime.Now.AddMinutes(-5);
+            } 
             try
             {
-                List<Dictionary<string, string>> queries = FourthWall.Program.getLongRunningQueries();
+                List<Dictionary<string, string>> queries = FourthWall.Program.getLongRunningQueries(from, to);
                 if (queries != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -72,10 +78,10 @@ namespace FourthWall.Controllers
 
         }
         /*|--------------------------------------------------------------------------------------------|
-         * getQueries()
+         * getTransactions()
          * 
          * GET request that returns JSON formatted result containing a list of all open transactions at 
-         * the time of request
+         * the time of request act
          * 
          * @params
          * Null
@@ -86,30 +92,29 @@ namespace FourthWall.Controllers
          *|--------------------------------------------------------------------------------------------|
          */
 
-        //[HttpGet("/api/transactions")]
-        //public IActionResult getTransactions()
-        //{
-        //    try
-        //    {
-        //        Dictionary<string, string> transactions = getOpenTransactions();
-        //        if (transactions != null)
-        //        {
-        //            using (MemoryStream ms = new MemoryStream())
-        //            {
-        //                serializer.WriteObject(ms, transactions);
-        //                Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
-        //                return Ok(JsonSerializer.Serialize(transactions));
-        //            }
-        //        }
-        //        return NotFound();
-
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine("Error: " + e.Message);
-        //        return NotFound();
-        //    }
-        //}
+        [HttpGet("/api/transactions")]
+        public IActionResult getTransactions()
+        {
+            try
+            {
+                Dictionary<string, List<Dictionary<string, string>>> transactions = Program.getOpenTransactions();
+                if (transactions != null)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        dictListSerializer.WriteObject(ms, transactions);
+                        Console.WriteLine(Encoding.Default.GetString(ms.ToArray()));
+                        return Ok(JsonSerializer.Serialize(transactions));
+                    }
+                }
+                return NotFound();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error: " + e.Message);
+                return NotFound();
+            }
+        }
 
         /*|--------------------------------------------------------------------------------------------|
          * getTableStats()

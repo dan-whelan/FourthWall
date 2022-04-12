@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2619,2696,pg_catalog,pg_statistic,pg_statistic_relid_att_inh_index,1804,1612,1612
+2619,2696,pg_catalog,pg_statistic,pg_statistic_relid_att_inh_index,1841,1646,1646

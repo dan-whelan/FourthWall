@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2605,2661,pg_catalog,pg_cast,pg_cast_source_target_index,6297,764,764
+2605,2661,pg_catalog,pg_cast,pg_cast_source_target_index,6457,781,781

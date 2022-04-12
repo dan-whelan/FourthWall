@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2615,2684,pg_catalog,pg_namespace,pg_namespace_nspname_index,228,144,144
+2615,2684,pg_catalog,pg_namespace,pg_namespace_nspname_index,232,146,146
