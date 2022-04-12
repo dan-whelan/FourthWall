@@ -602,8 +602,7 @@ namespace Fourthwall
 
         // api team calls this method
         public static Dictionary<string, List<Dictionary<string, string>>> getOpenTransactions() 
-        {
-            //TODO - sanitise input to prevent sql injection 
+        { 
             NpgsqlConnection con = GetConnection();
             con.Open();
             // query must be the last column in the SELECT statement due to how parsing is implemented
