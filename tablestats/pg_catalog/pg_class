@@ -1,2 +1,2 @@
 relid,schemaname,relname,seq_scan,seq_tup_read,idx_scan,idx_tup_fetch,n_tup_ins,n_tup_upd,n_tup_del,n_tup_hot_upd,n_live_tup,n_dead_tup,n_mod_since_analyze,n_ins_since_vacuum,last_vacuum,last_autovacuum,last_analyze,last_autoanalyze,vacuum_count,autovacuum_count,analyze_count,autoanalyze_count
-1259,pg_catalog,pg_class,43433,13395521,24362,24097,12,4,0,4,12,4,16,12,,,,,0,0,0,0
+1259,pg_catalog,pg_class,50255,15554033,27947,27655,12,4,0,4,12,4,16,12,,,,,0,0,0,0

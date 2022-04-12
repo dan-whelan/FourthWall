@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2602,2653,pg_catalog,pg_amop,pg_amop_fam_strat_index,1023,1023,1023
+2602,2653,pg_catalog,pg_amop,pg_amop_fam_strat_index,1107,1107,1107

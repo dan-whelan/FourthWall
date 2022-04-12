@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2618,2693,pg_catalog,pg_rewrite,pg_rewrite_rel_rulename_index,82,82,82
+2618,2693,pg_catalog,pg_rewrite,pg_rewrite_rel_rulename_index,86,86,86

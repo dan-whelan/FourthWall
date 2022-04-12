@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2604,2656,pg_catalog,pg_attrdef,pg_attrdef_adrelid_adnum_index,77,77,77
+2604,2656,pg_catalog,pg_attrdef,pg_attrdef_adrelid_adnum_index,81,81,81

@@ -9,6 +9,7 @@ using Npgsql;
 using System.Data;
 using Fourthwall;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace FourthWall
 {
@@ -37,11 +38,35 @@ namespace FourthWall
                     basePath = "";
                 }
                 else basePath = tmpBasePath;
-                CreateHostBuilder(args).Build().Run();
+                Parallel.Invoke
+                (
+                    () => RunPolling(timeInterval),
+                    () => RunAPI(args)
+                );
             } catch(Exception ex)
             {
                 Console.WriteLine("Error: " + ex.Message);
             }
+        }
+
+        public static void RunPolling(int timeInterval)
+        {
+            while (true)
+            {
+                Console.Write("Start time: ");
+                Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
+                storeTableStatistics();
+                storeIndexStatistics();
+                Console.Write("End time: ");
+                Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
+                Console.WriteLine();
+                Thread.Sleep(timeInterval);
+            }
+        }
+
+        public static void RunAPI(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -497,14 +522,3 @@ namespace FourthWall
 
 }
 
-//while (true)
-//{
-//    Console.Write("Start time: ");
-//    Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
-//    storeTableStatistics();
-//    storeIndexStatistics();
-//    Console.Write("End time: ");
-//    Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
-//    Console.WriteLine();
-//    Thread.Sleep(timeInterval);
-//}

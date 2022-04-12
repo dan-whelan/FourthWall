@@ -126,15 +126,7 @@ namespace FourthWall.Controllers
         {
             try
             {
-                List<Dictionary<string, string>> tableStats;
-                if (schema != null && table != null)
-                {
-                    tableStats = FourthWall.Program.getTableStats(schema, table);
-                }
-                else
-                {
-                    return NotFound();
-                }
+                List<Dictionary<string, string>> tableStats = FourthWall.Program.getTableStats(schema, table);
                 if (tableStats != null)
                 {
                     using (MemoryStream ms = new MemoryStream())

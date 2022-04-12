@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-3381,3379,pg_catalog,pg_statistic_ext,pg_statistic_ext_relid_index,408,0,0
+3381,3379,pg_catalog,pg_statistic_ext,pg_statistic_ext_relid_index,442,0,0

@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2600,2650,pg_catalog,pg_aggregate,pg_aggregate_fnoid_index,41,41,41
+2600,2650,pg_catalog,pg_aggregate,pg_aggregate_fnoid_index,43,43,43
