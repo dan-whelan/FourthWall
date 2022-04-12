@@ -243,6 +243,8 @@ namespace Fourthwall
                 }
             }
 
+            openTransactions.Add("readOnly", readOnlyTransactions);
+            openTransactions.Add("readWrite", readWriteTransactions);
             // readOnlyTransactions.ForEach(x => x.ToList().ForEach(x => Console.WriteLine(x)));
             // readWriteTransactions.ForEach(x => x.ToList().ForEach(x => Console.WriteLine(x)));
 
