@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2620,2701,pg_catalog,pg_trigger,pg_trigger_tgrelid_tgname_index,72,142,142
+2620,2701,pg_catalog,pg_trigger,pg_trigger_tgrelid_tgname_index,76,150,150

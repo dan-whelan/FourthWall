@@ -43,8 +43,13 @@ namespace FourthWall.Controllers
          *|--------------------------------------------------------------------------------------------|
          */
         [HttpGet("/api/queries/{from:datetime?}/{to:datetime?}")]
-        public IActionResult getQueriesAPI(DateTime from, DateTime to)
+        public IActionResult getQueriesAPI(DateTime? from, DateTime? to)
         {
+            if(from == null || to == null)
+            {
+                from = DateTime.Now.AddMinutes(-5);
+                to = DateTime.Now;
+            }
             try
             {
                 List<Dictionary<string, string>> queries = FourthWall.Program.getLongRunningQueries();

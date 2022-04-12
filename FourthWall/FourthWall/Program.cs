@@ -93,11 +93,11 @@ namespace FourthWall
         }
         private static NpgsqlConnection GetConnection()
         {
-            string? database = Environment.GetEnvironmentVariable("DATABASE");
-            string? password = Environment.GetEnvironmentVariable("PASSWORD");
-            string? userid = Environment.GetEnvironmentVariable("USERID");
-            string? port = Environment.GetEnvironmentVariable("PORT");
-            string? server = Environment.GetEnvironmentVariable("SERVER");
+            string database = Environment.GetEnvironmentVariable("DATABASE");
+            string password = Environment.GetEnvironmentVariable("PASSWORD");
+            string userid = Environment.GetEnvironmentVariable("USERID");
+            string port = Environment.GetEnvironmentVariable("PORT");
+            string server = Environment.GetEnvironmentVariable("SERVER");
             return new NpgsqlConnection($"Server={server};Port={port};User Id={userid};Password={password};Database={database}");
         }
 
@@ -475,26 +475,36 @@ namespace FourthWall
         }
 
         // api team calls this method 
-        public static List<Dictionary<string, string>> getTableData(string? schema, string? table)
+        public static List<Dictionary<string, string>> getTableData(string schema, string table)
         {
-            //TODO - sanitise input to prevent sql injection 
-            NpgsqlConnection con = GetConnection();
-            con.Open();
-            string sql = $"SELECT * FROM {schema}.{table};";
-            NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
-            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Dictionary<string, string>> result;
+            if (table.Substring(0, 5).Equals("auth-"))
+            {
+                //TODO - sanitise input to prevent sql injection 
+                NpgsqlConnection con = GetConnection();
+                con.Open();
+                string sql = $"SELECT * FROM {schema}.{table.Substring(5)};";
+                NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
 
-            // prettyPrint(reader);
-            String[] tableData = retrieveResultTableData(reader);
-            List<Dictionary<string, string>> result = parseData(tableData);
-
-            con.Close();
-
+                // prettyPrint(reader);
+                String[] tableData = retrieveResultTableData(reader);
+                result = parseData(tableData);
+                con.Close();
+            }
+            else
+            {
+                var data = new List<Dictionary<string, string>>();
+                var dict = new Dictionary<string, string>();
+                dict.Add("message","unauthorised");
+                data.Add(dict);
+                result = data;
+            }
             return result;
         }
 
         // api team calls this method 
-        public static Dictionary<string, string> getResultOfExplainAnalyze(string? query)
+        public static Dictionary<string, string> getResultOfExplainAnalyze(string query)
         {
             //TODO - sanitise input to prevent sql injection 
             NpgsqlConnection con = GetConnection();

@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2606,2665,pg_catalog,pg_constraint,pg_constraint_conrelid_contypid_conname_index,49,46,46
+2606,2665,pg_catalog,pg_constraint,pg_constraint_conrelid_contypid_conname_index,78,75,75

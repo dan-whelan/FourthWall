@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2603,2655,pg_catalog,pg_amproc,pg_amproc_fam_proc_index,13329,38982,38982
+2603,2655,pg_catalog,pg_amproc,pg_amproc_fam_proc_index,13535,39464,39464
