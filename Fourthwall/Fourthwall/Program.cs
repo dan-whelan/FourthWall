@@ -555,11 +555,9 @@ namespace Fourthwall
             string fullParentDir = Path.Combine(basePath, "LongRunningQueries");
             DirectoryInfo dirInfo = new DirectoryInfo(fullParentDir);
 
-            IEnumerable<FileInfo> files = from f in dirInfo.EnumerateFiles()
+            IEnumerable<string> paths = from f in dirInfo.EnumerateFiles()
                                         where isWithinTimestamp(fromTime, toTime, f.Name)
-                                        select f;
-
-            var paths = files.Select(f => Path.Combine("LongRunningQueries", f.Name));
+                                        select Path.Combine("LongRunningQueries", f.Name);
             
             return aggregateQueries(paths);
         }
