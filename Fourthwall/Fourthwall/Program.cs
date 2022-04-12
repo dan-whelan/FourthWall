@@ -30,20 +30,18 @@ namespace Fourthwall
                 basePath = "";
             } else basePath = tmpBasePath;
 
-            // while (true) 
-            // {
-            //     Console.Write("Start time: ");
-            //     Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
-            //     storeTableStatistics();
-            //     storeIndexStatistics();
-            //     storeLongRunningQueries();
-            //     Console.Write("End time: ");
-            //     Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
-            //     Console.WriteLine();
-            //     Thread.Sleep(timeInterval);
-            // }
-
-            getOpenTransactions();
+            while (true) 
+            {
+                Console.Write("Start time: ");
+                Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
+                storeTableStatistics();
+                storeIndexStatistics();
+                storeLongRunningQueries();
+                Console.Write("End time: ");
+                Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
+                Console.WriteLine();
+                Thread.Sleep(timeInterval);
+            }
 
         }
 
