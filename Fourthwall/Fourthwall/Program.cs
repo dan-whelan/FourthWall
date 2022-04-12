@@ -1,12 +1,13 @@
 using System.Text;
 using Npgsql;
 using System.Data;
-
+using System.Globalization;
 namespace Fourthwall 
 {
     public class Program
     {
         private static string basePath = "";
+        private static int longRunningQueriesDefaultTimeInSeconds;
         static void Main(string[] args)
         {
             var root = Directory.GetCurrentDirectory();
@@ -14,6 +15,11 @@ namespace Fourthwall
             DotEnv.Load(dotenv);
             string? tmpBasePath = Environment.GetEnvironmentVariable("BASEPATH");
             string? timeIntervalString = Environment.GetEnvironmentVariable("POLLING_INTERVAL_MILLISECONDS");
+            string? longRunningQueriesDefaultTimeInSecondsString = Environment.GetEnvironmentVariable("LONG_RUNNING_QUERIES_DEFAULT_TIME_SECS");
+            if(!int.TryParse(longRunningQueriesDefaultTimeInSecondsString, out longRunningQueriesDefaultTimeInSeconds)) 
+            {
+                longRunningQueriesDefaultTimeInSeconds = 5;
+            }
             int timeInterval;
             if (!int.TryParse(timeIntervalString, out timeInterval)) 
             {
@@ -24,17 +30,21 @@ namespace Fourthwall
                 basePath = "";
             } else basePath = tmpBasePath;
 
-            while (true) 
-            {
-                Console.Write("Start time: ");
-                Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
-                storeTableStatistics();
-                storeIndexStatistics();
-                Console.Write("End time: ");
-                Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
-                Console.WriteLine();
-                Thread.Sleep(timeInterval);
-            }
+            // while (true) 
+            // {
+            //     Console.Write("Start time: ");
+            //     Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
+            //     storeTableStatistics();
+            //     storeIndexStatistics();
+            //     storeLongRunningQueries();
+            //     Console.Write("End time: ");
+            //     Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
+            //     Console.WriteLine();
+            //     Thread.Sleep(timeInterval);
+            // }
+
+            getOpenTransactions();
+
         }
 
 
@@ -93,12 +103,35 @@ namespace Fourthwall
             retrieveIndexUsageAndPersist(cmd);
             con.Close();
         } 
-
-        private static void storeLongRunningQueries(string fromTimestamp, string toTimestamp) 
+        private static void storeLongRunningQueries() 
         {
+             //get connection
+            NpgsqlConnection con = GetConnection();
+            con.Open();
 
+            // Define a query
+            // query must be the last column in the SELECT statement due to how parsing is implemented
+            NpgsqlCommand cmd = new NpgsqlCommand($@"SELECT
+            pid,
+            user,
+            pg_stat_activity.query_start,
+            age(clock_timestamp(), query_start),
+            state,
+            wait_event_type,
+            wait_event,
+            query
+            FROM pg_stat_activity
+            WHERE state != 'idle in transaction' AND state != 'idle in transaction (aborted)' AND (now() - pg_stat_activity.query_start) > interval '{longRunningQueriesDefaultTimeInSeconds} seconds';", con);
+             
+             // Execute the query and obtain a result set
+            // NpgsqlDataReader reader = cmd.ExecuteReader();
+            // prettyPrint(command);
+            retrieveLongRunningQueriesAndPersist(cmd);
+            con.Close();
         }
         
+
+
         // note: overwrites the file
         private static void store(string path, string data) 
         {
@@ -162,6 +195,21 @@ namespace Fourthwall
             return list;
         }
 
+        private static List<Dictionary<string, string>> parseQueries(string[] data) 
+        {
+            var list = new List<Dictionary<string, string>>();
+
+            string[] headers = data[0].Split(',');
+            string[] queries = data.Skip(1).ToArray();
+            foreach (string query in queries) 
+            {
+                string[] stats = query.Split(',', headers.Length);
+                list.Add(headers.Zip(stats, (k, v) => new {Key = k, Value = v}).ToDictionary(x => x.Key, x => x.Value));
+            }
+
+            return list;
+        }
+
         private static Dictionary<string, string> parseExplainAnalyze(string[] data) 
         {
             string queryPlan = data[1];
@@ -174,6 +222,34 @@ namespace Fourthwall
             return map;
         }
 
+        private static Dictionary<string, List<Dictionary<string, string>>> parseOpenTransactions(string[] data) 
+        {
+            string[] headers = data[0].Split(',');
+
+            var openTransactions = new Dictionary<string, List<Dictionary<string, string>>>();
+            List<Dictionary<string, string>> readOnlyTransactions = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> readWriteTransactions = new List<Dictionary<string, string>>();
+
+           for (int i = 1; i < data.Length; i++) 
+            {
+                string[] stats = data[i].Split(',', headers.Length);
+
+                Dictionary<string, string> map = headers.Zip(stats, (k, v) => new {Key = k, Value = v}).ToDictionary(x => x.Key, x => x.Value);
+                if(map["locktype"].Equals("transactionid")) 
+                {
+                    readWriteTransactions.Add(map);
+                } 
+                else if (map["locktype"].Equals("virtualxid")) 
+                {
+                    readOnlyTransactions.Add(map);
+                }
+            }
+
+            // readOnlyTransactions.ForEach(x => x.ToList().ForEach(x => Console.WriteLine(x)));
+            // readWriteTransactions.ForEach(x => x.ToList().ForEach(x => Console.WriteLine(x)));
+
+            return openTransactions;
+        }
         private static void retrieveTableStatsAndPersist(NpgsqlCommand cmd) {
             NpgsqlDataReader reader = cmd.ExecuteReader();
             int tableindex = 0;
@@ -295,9 +371,38 @@ namespace Fourthwall
             }
         }
 
-        private static void retrieveLongRunningQueriesAndPersist() 
+        private static void retrieveLongRunningQueriesAndPersist(NpgsqlCommand cmd) 
         {
-            
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            string currentTimestamp = DateTime.Now.ToString("yyyyMMddHHmmssffff");
+            // Console.WriteLine(currentTimestamp);
+            StringBuilder headers = new System.Text.StringBuilder();
+            StringBuilder longRunningQueries = new System.Text.StringBuilder();
+            for (int i = 0; i < reader.FieldCount; i++) 
+            {
+                headers.Append(String.Format("{0}", reader.GetName(i)));
+                if (i != reader.FieldCount - 1) 
+                {
+                    headers.Append(',');
+                }
+            }
+
+            while (reader.Read()) 
+            {
+                StringBuilder stats = new System.Text.StringBuilder();
+                for (int i = 0; i < reader.FieldCount; i++) 
+                {
+                    stats.Append(String.Format("{0}", reader[i]));
+                    if (i != reader.FieldCount - 1) 
+                    {
+                        stats.Append(',');
+                    }
+                }
+                longRunningQueries.Append("<query>" + stats.ToString()); // <query> is the delimeter
+            }
+
+            string data = headers.ToString() + longRunningQueries.ToString();
+            store($"LongRunningQueries/{currentTimestamp}", data);
         }
 
         private static string[] retrieveResultExplainAnalyze(NpgsqlDataReader reader) 
@@ -365,7 +470,7 @@ namespace Fourthwall
             return tableData.ToArray();
         }
 
-        private static string[] retrieveResultsOpenTransaction()
+        private static string[] retrieveResultsOfOpenTransaction(NpgsqlDataReader reader)
         {
             return new string[0];
         }
@@ -397,6 +502,32 @@ namespace Fourthwall
             Console.WriteLine(sb);
         }
 
+        // string time is in yyyyMMddHHmmssffff format
+        private static bool isWithinTimestamp(DateTime from, DateTime to, string timeString) 
+        {
+            DateTime time = DateTime.ParseExact(timeString, "yyyyMMddHHmmssffff", CultureInfo.InvariantCulture);
+            return from <= time && time <= to;
+        }
+
+        private static List<Dictionary<string, string>> aggregateQueries(IEnumerable<string> paths) 
+        {
+            var result = new List<Dictionary<string, string>>();
+            foreach (string path in paths) 
+            {
+                Console.WriteLine(path);
+                Console.WriteLine();
+                string fullpath = Path.Combine(basePath, path);
+                byte[] byteArr = File.ReadAllBytes(fullpath);
+                string str = System.Text.Encoding.Default.GetString(byteArr);
+                string[] arr = str.Split("<query>");
+                var parsedQueries = parseQueries(arr);
+                result.AddRange(parsedQueries);
+            }
+            
+            result.ForEach(x => x.ToList().ForEach(x => Console.WriteLine(x)));
+            return result;
+        }
+
         // api team calls this method 
         public static List<Dictionary<string, string>> getTableStats(string schema, string table) 
         {
@@ -419,10 +550,18 @@ namespace Fourthwall
         }
 
         // api team calls this method   
-        public static List<Dictionary<string, string>> getLongRunningQueries() 
+        public static List<Dictionary<string, string>> getLongRunningQueries(DateTime fromTime, DateTime toTime) 
         {
-            string[] stats = getData($"LongRunningQueries/timestamp1");
-            return parseData(stats);
+            string fullParentDir = Path.Combine(basePath, "LongRunningQueries");
+            DirectoryInfo dirInfo = new DirectoryInfo(fullParentDir);
+
+            IEnumerable<FileInfo> files = from f in dirInfo.EnumerateFiles()
+                                        where isWithinTimestamp(fromTime, toTime, f.Name)
+                                        select f;
+
+            var paths = files.Select(f => Path.Combine("LongRunningQueries", f.Name));
+            
+            return aggregateQueries(paths);
         }
 
         // api team calls this method 
@@ -464,10 +603,26 @@ namespace Fourthwall
         }
 
         // api team calls this method
-        public static string[] getOpenTransactions(string schema, string tableName) 
+        public static Dictionary<string, List<Dictionary<string, string>>> getOpenTransactions() 
         {
             //TODO - sanitise input to prevent sql injection 
-            return new string[0];
+            NpgsqlConnection con = GetConnection();
+            con.Open();
+            // query must be the last column in the SELECT statement due to how parsing is implemented
+            string sql = @"SELECT locktype, locks.pid, transactionid, virtualxid, state, mode, granted, xact_start, query_start, state_change, wait_event_type, wait_event, query
+                            FROM pg_locks locks
+                            INNER join pg_stat_activity activity
+                                ON locks.transactionid = activity.backend_xid OR locks.pid = activity.pid
+                            WHERE locks.locktype = 'transactionid' OR locks.locktype='virtualxid';";
+            NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            //prettyPrint(reader);
+
+            string[] openTransactions = retrieveResultTableData(reader);
+            Dictionary<string, List<Dictionary<string, string>>> result = parseOpenTransactions(openTransactions);
+            
+            con.Close();
+            return result;
         }
     }    
 
