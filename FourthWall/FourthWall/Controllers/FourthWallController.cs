@@ -7,14 +7,15 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using FourthWall.Models;
 using FourthWall.Attributes;
+using System.Globalization;
 /*|-------------------------------------------------------------------------------------------|
- * FourthWall API Controller
- * 
- * Controller that enables API to make use of GET and POST requests from Monitoring System
- * 
- * NEEDS TEST SUITE
- *|-------------------------------------------------------------------------------------------|
- */
+* FourthWall API Controller
+* 
+* Controller that enables API to make use of GET and POST requests from Monitoring System
+* 
+* NEEDS TEST SUITE
+*|-------------------------------------------------------------------------------------------|
+*/
 namespace FourthWall.Controllers
 {
     [ApiKey]
@@ -29,6 +30,9 @@ namespace FourthWall.Controllers
 
         //serializer that allows for the conversion of type Dictionary<string, List<Dictionary<string, string>>>
         private DataContractJsonSerializer dictListSerializer = new DataContractJsonSerializer(typeof(Dictionary<string, List<Dictionary<string, string>>>));
+
+        private DateTime from = new DateTime();
+        private DateTime to = new DateTime();
 
         /*|--------------------------------------------------------------------------------------------|
          * getQueries()
@@ -45,17 +49,19 @@ namespace FourthWall.Controllers
          * or NotFound()
          *|--------------------------------------------------------------------------------------------|
          */
-        [HttpGet("/api/queries/{from:datetime?}/{to:datetime?}")]
-        public IActionResult getQueriesAPI(DateTime? from, DateTime? to)
+        [HttpGet("/api/queries/{fromStr?}/{toStr?}")]
+        public IActionResult getQueriesAPI(string fromStr, string toStr)
         {
-            if (to == null)
-            {
-                to = DateTime.Now;
-            }
-            else if(from == null)
+            if(fromStr == null && toStr == null)
             {
                 from = DateTime.Now.AddMinutes(-5);
-            } 
+                to = DateTime.Now;
+            }
+            else
+            {
+                DateTime from = DateTime.ParseExact(fromStr, "yyyyMMddHHmmssffff", CultureInfo.InvariantCulture);
+                DateTime to = DateTime.ParseExact(toStr, "yyyyMMddHHmmssffff", CultureInfo.InvariantCulture);
+            }
             try
             {
                 List<Dictionary<string, string>> queries = FourthWall.Program.getLongRunningQueries(from, to);
@@ -315,6 +321,6 @@ namespace FourthWall.Controllers
                 Console.WriteLine("Error: " + e.Message);
                 return NotFound();
             }
-        }
+        } 
     }
 }

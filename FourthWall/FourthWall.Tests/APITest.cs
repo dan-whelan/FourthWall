@@ -16,7 +16,9 @@ namespace FourthWall.Tests
         {
             var controller = new FourthWallController();
             var result = controller.getTableStatsAPI("college", "student") as IActionResult;
-            Assert.IsInstanceOfType(result, typeof(OkResult)); 
+            Assert.IsInstanceOfType(result, typeof(OkResult));
+            result = controller.getTableStatsAPI("college", "students") as IActionResult;
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
         [TestMethod]
@@ -25,22 +27,28 @@ namespace FourthWall.Tests
             var controller = new FourthWallController();
             var result = controller.getAllIndexUsageAPI("college", "student") as IActionResult;
             Assert.IsInstanceOfType(result, typeof(OkResult));
+            result = controller.getAllIndexUsageAPI("college", "students") as IActionResult;
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
         [TestMethod]
         public void testSpecificIndexUsage()
         {
             var controller = new FourthWallController();
-            var result = controller.getIndexUsageAPI("college", "student", "idx_address_city") as IActionResult;
+            var result = controller.getIndexUsageAPI("college", "address", "idx_address_city") as IActionResult;
             Assert.IsInstanceOfType(result, typeof(OkResult));
+            result = controller.getIndexUsageAPI("college", "student","idx_address_city") as IActionResult;
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
         [TestMethod]
         public void testGetTableData()
         {
             var controller = new FourthWallController();
-            var result = controller.getSystemTableDataAPI("college", "student") as IActionResult;
+            var result = controller.getSystemTableDataAPI("college", "auth-student") as IActionResult;
             Assert.IsInstanceOfType(result, typeof(OkResult));
+            result = controller.getSystemTableDataAPI("college", "students") as IActionResult;
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
         [TestMethod]
@@ -49,8 +57,25 @@ namespace FourthWall.Tests
             var controller = new FourthWallController();
             var query = new Query { query = "SELECT * FROM college.student" };
             var result = controller.postExplainAnalyseAPI(query) as IActionResult;
+            Assert.IsInstanceOfType(result, typeof(OkResult)); 
+        }
+
+        [TestMethod]
+        public void testOpenTransactions()
+        {
+            var controller = new FourthWallController();
+            var result = controller.getTransactions() as IActionResult;
             Assert.IsInstanceOfType(result, typeof(OkResult));
-            
+        }
+
+        [TestMethod]
+        public void testLongRunningQueries()
+        {
+            var controller = new FourthWallController();
+            var result = controller.getQueriesAPI("202204131030000000", "202204131100000000") as IActionResult;
+            Assert.IsInstanceOfType(result, typeof(OkResult));
+            result = controller.getQueriesAPI(null, null) as IActionResult;
+            Assert.IsInstanceOfType(result, typeof(OkResult));
         }
     }
 }

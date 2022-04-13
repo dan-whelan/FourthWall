@@ -64,6 +64,7 @@ namespace FourthWall
                 Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
                 storeTableStatistics();
                 storeIndexStatistics();
+                storeLongRunningQueries();
                 Console.Write("End time: ");
                 Console.WriteLine(DateTime.Now.ToString("hh:mm:ss tt"));
                 Console.WriteLine();
@@ -550,7 +551,7 @@ namespace FourthWall
         }
 
         // string time is in yyyyMMddHHmmssffff format
-        private static bool isWithinTimestamp(DateTime? from, DateTime? to, string timeString)
+        private static bool isWithinTimestamp(DateTime from, DateTime to, string timeString)
         {
             DateTime time = DateTime.ParseExact(timeString, "yyyyMMddHHmmssffff", CultureInfo.InvariantCulture);
             return from <= time && time <= to;
@@ -597,7 +598,7 @@ namespace FourthWall
         }
 
         // api team calls this method   
-        public static List<Dictionary<string, string>> getLongRunningQueries(DateTime? fromTime, DateTime? toTime)
+        public static List<Dictionary<string, string>> getLongRunningQueries(DateTime fromTime, DateTime toTime)
         {
             string fullParentDir = Path.Combine(basePath, "LongRunningQueries");
             DirectoryInfo dirInfo = new DirectoryInfo(fullParentDir);

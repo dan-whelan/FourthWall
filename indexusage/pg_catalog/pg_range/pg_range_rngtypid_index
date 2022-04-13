@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-3541,3542,pg_catalog,pg_range,pg_range_rngtypid_index,122,102,0
+3541,3542,pg_catalog,pg_range,pg_range_rngtypid_index,136,116,0

@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-1255,2691,pg_catalog,pg_proc,pg_proc_proname_args_nsp_index,77,118,118
+1255,2691,pg_catalog,pg_proc,pg_proc_proname_args_nsp_index,108,181,181

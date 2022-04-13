@@ -1,2 +1,2 @@
 relid,indexrelid,schemaname,relname,indexrelname,idx_scan,idx_tup_read,idx_tup_fetch
-2840,2841,pg_toast,pg_toast_2619,pg_toast_2619_index,210,207,207
+2840,2841,pg_toast,pg_toast_2619,pg_toast_2619_index,224,221,221
