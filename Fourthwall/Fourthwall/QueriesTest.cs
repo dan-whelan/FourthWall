@@ -25,37 +25,61 @@ namespace Fourthwall
         [Fact]
         public void TestExplainAnalyze() 
         {
-            Assert.True(true);
-        }
-
-        [Fact]
-        public void TestTableStats() 
-        {
-            Assert.True(true);
-        }
-
-        [Fact]
-        public void TestIndexUsage() 
-        {
-            Assert.True(true);
-        }
-        
-        [Fact]
-        public void TestIndexesInTableUsage() 
-        {
-            Assert.True(true);
-        }
-
-        [Fact]
-        public void TestLongRunningQueries() 
-        {
-            Assert.True(true);
+            Setup();
+            List<Dictionary<string, string>> data = getData();
+            string query = "select * from testSchema.testTable;";
+            string queryPlan = Program.getResultOfExplainAnalyze(query)["queryPlan"];
+            Assert.IsType<String>(queryPlan);
+            Assert.Matches(@"Seq Scan on testtable.*\nPlanning Time.*\nExecution Time.*", queryPlan);
+            Clean();
         }
 
         [Fact]
         public void TestOpenTransactions() 
         {
-            Assert.True(true);
+            Dictionary<string, List<Dictionary<string, string>>> openTransactions = Program.getOpenTransactions();
+            Assert.Contains<string>("readOnly", openTransactions.Keys);
+            Assert.Contains<string>("readWrite", openTransactions.Keys);
+        }
+
+        [Fact]
+        public void TestIsWithinTimestampValid() 
+        {
+            DateTime testTime = DateTime.Now;
+            
+            // hours 
+            DateTime from = testTime.AddHours(-3);
+            DateTime to = testTime.AddHours(-1);
+            string time = testTime.AddHours(-2).ToString("yyyyMMddHHmmssffff");
+            Assert.True(Program.isWithinTimestamp(from, to, time));
+            
+            // mins 
+            from = testTime.AddMinutes(-3);
+            to = testTime.AddMinutes(-1);
+            time = testTime.AddMinutes(-2).ToString("yyyyMMddHHmmssffff");
+            Assert.True(Program.isWithinTimestamp(from, to, time));
+
+            // seconds 
+            from = testTime.AddSeconds(-3);
+            to = testTime.AddSeconds(-1);
+            time = testTime.AddSeconds(-2).ToString("yyyyMMddHHmmssffff");
+            Assert.True(Program.isWithinTimestamp(from, to, time));
+
+            // Milliseconds 
+            from = testTime.AddMilliseconds(-3);
+            to = testTime.AddMilliseconds(-1);
+            time = testTime.AddMilliseconds(-2).ToString("yyyyMMddHHmmssffff");
+            Assert.True(Program.isWithinTimestamp(from, to, time));
+        }
+
+        [Fact]
+        public void TestIsWithinTimestampFromGreaterThanTo() 
+        {
+            DateTime testTime = DateTime.Now;
+            DateTime from = testTime.AddMilliseconds(-1);;
+            DateTime to = testTime.AddMilliseconds(-3);
+            string time = testTime.AddMilliseconds(-2).ToString("yyyyMMddHHmmssffff");
+            Assert.False(Program.isWithinTimestamp(from, to, time));
         }
 
         private void CreateTestSchema() 

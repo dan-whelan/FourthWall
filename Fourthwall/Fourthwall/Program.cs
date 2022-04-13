@@ -503,7 +503,7 @@ namespace Fourthwall
         }
 
         // string time is in yyyyMMddHHmmssffff format
-        private static bool isWithinTimestamp(DateTime from, DateTime to, string timeString) 
+        public static bool isWithinTimestamp(DateTime from, DateTime to, string timeString) 
         {
             DateTime time = DateTime.ParseExact(timeString, "yyyyMMddHHmmssffff", CultureInfo.InvariantCulture);
             return from <= time && time <= to;
