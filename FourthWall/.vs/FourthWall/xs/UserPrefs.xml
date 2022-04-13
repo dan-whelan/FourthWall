@@ -1,23 +1,23 @@
 ﻿<Properties StartupConfiguration="{4892FE54-BF41-4E29-9E26-DA71342E4F8F}|Default">
   <MonoDevelop.Ide.ItemProperties.FourthWall.Tests FirstBuild="True" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="FourthWall/Controllers/FourthWallController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="FourthWall/appsettings.json">
     <Files>
-      <File FileName="FourthWall/Controllers/FourthWallController.cs" Line="58" Column="15" />
+      <File FileName="FourthWall/Controllers/FourthWallController.cs" Line="52" Column="49" />
+      <File FileName="FourthWall/Program.cs" Line="186" Column="73" />
       <File FileName="FourthWall/Startup.cs" />
       <File FileName="FourthWall.Tests/APITest.cs" />
       <File FileName="FourthWall/Models/Query.cs" />
       <File FileName="FourthWall/QueriesTest.cs" />
-      <File FileName="FourthWall/Program.cs" />
+      <File FileName="FourthWall/appsettings.json" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="FourthWall" expanded="True">
             <Node name="FourthWall" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="FourthWallController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
               <Node name="Models" expanded="True" />
+              <Node name="appsettings.json" selected="True" />
             </Node>
             <Node name="FourthWall.Tests" expanded="True" />
           </Node>
