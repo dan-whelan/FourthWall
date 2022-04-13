@@ -45,7 +45,7 @@ A basic authentication using an API key is used for this template, in later iter
 
 ## .env File Specification
 
-### Necessary Evironment Variables
+### Necessary Environment Variables
 - DATABASE=nameOfDatabase 
 - PASSWORD=password
 - USERID=userid
