@@ -5,10 +5,10 @@ FourthWall is a database monitoring service that allows for easy access to metad
 relating to PostGresDBs. Using polling these are stored in an external file system 
 that can be accessed through the use of an authenticated API. 
 
-##Setup
+## Setup
 
 
-##API Calls
+## API Calls
 To create an API request to the service the following methods can be used:
 - Terminal
     While the project is running input following for unix terminal for general GET request
@@ -40,5 +40,21 @@ To create an API request to the service the following methods can be used:
         
         curl -X GET  https://localhost:<port_number>/api/data/{schema}/{table} -H "ApiKey: <api_key>"
 
-##Authentication
+## Authentication
 A basic authentication using an API key is used for this template, in later iterations a more secure authentication system would be used. Source stored in Attributes.
+
+## .env File Specification
+
+### Necessary Evironment Variables
+- DATABASE=nameOfDatabase 
+- PASSWORD=password
+- USERID=userid
+- SERVER=server
+- PORT=portnumber
+- BASEPATH=base/path/to/store/statistics
+
+### Optional Environment Variables
+- POLLING_INTERVAL_MILLISECONDS=15000
+- LONG_RUNNING_QUERIES_DEFAULT_TIME_SECS=5
+
+
